@@ -470,39 +470,41 @@ footer p {
 
 
 
-.ccontainer{
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch; /* pour les appareils mobiles */
-    scroll-snap-type: x mandatory; /* pour un défilement fluide */
+.ccontainer {
+    display: flex; /* Utilise Flexbox pour disposer les éléments enfants en ligne */
+    flex-wrap: wrap; /* Empêche les éléments de passer à la ligne suivante, reste sur une seule ligne */
+   -webkit-overflow-scrolling: touch; /* Permet un défilement fluide sur les appareils iOS */
+    
 }
-.bcard{
-    display: flex;
-    margin: 2px;
 
+.bcard {
+    display: flex; /* Utilise Flexbox pour aligner les éléments enfants en ligne */
+    margin: 2px; /* Ajoute une petite marge autour du conteneur */
 }
-.ccard{
-    background-color: #fff;
-    border-radius: 5px;
+
+.ccard {
+    background-color: #fff; /* Définit un fond blanc pour chaque carte */
+    border-radius: 5px; /* Arrondit légèrement les coins de la carte */
     width: 200px; /* La largeur des cartes reste la même */
-    height: 400px;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    text-align: center;
-    flex: 0 0 auto; /* pour éviter que les éléments ne soient compressés */
+    height: 400px; /* Hauteur fixe pour toutes les cartes */
+    padding: 10px; /* Ajoute de l’espace à l’intérieur de la carte */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Ajoute une ombre légère pour donner du relief */
+    text-align: center; /* Centre le texte horizontalement à l’intérieur de la carte */
+    flex: 0 0 auto; /* Empêche la carte de s’étirer ou de se réduire dans un conteneur flex */
 }
-.ccard p{
-    text-align: center;
-    margin: 2px;
+
+.ccard p {
+    text-align: center; /* Centre horizontalement le texte du paragraphe */
+    margin: 2px; /* Ajoute une petite marge autour du paragraphe */
 }
+
 .product-image {
-    width: 100%; /* Définit la largeur de l'image pour qu'elle occupe toute la largeur de la carte */
-    height: 50%; /* Ajuste automatiquement la hauteur de l'image en fonction de sa largeur pour maintenir les proportions */
-    border-bottom: 1px solid #ddd; /* Ajoute une bordure en bas de l'image pour la séparer visuellement du reste du contenu */
-    margin-bottom: 15px; /* Ajoute un espace en dessous de l'image pour séparer l'image du texte en dessous */
+    width: 100%; /* L’image occupe toute la largeur disponible de la carte */
+    height: 50%; /* L’image prend 50% de la hauteur de la carte */
+    border-bottom: 1px solid #ddd; /* Ajoute une ligne grise sous l’image pour séparer visuellement */
+    margin-bottom: 15px; /* Espace entre l’image et le contenu qui suit */
 }
+
 
 .pprix {
     font-weight: bold;
@@ -606,6 +608,14 @@ footer p {
 }
 
 @media all and (max-width: 1024px) {
+
+    .ccontainer {
+        flex-wrap: nowrap; /* Empêche les éléments de passer à la ligne suivante, reste sur une seule ligne */
+    overflow-x: auto; /* Active le défilement horizontal si le contenu dépasse la largeur */
+    overflow-y: hidden; /* Désactive le défilement vertical */
+    -webkit-overflow-scrolling: touch; /* Permet un défilement fluide sur les appareils iOS */
+    scroll-snap-type: x mandatory; /* Active le snap horizontal pour aligner les éléments pendant le scroll */
+}
       header h1 {
         font-size: 40px; /* Ajuste la taille du texte pour les tablettes et petits écrans */
     }
@@ -677,92 +687,95 @@ footer p {
 
 
 
-/* Conteneur des boutons */
-.social-buttons-container {
-    display: flex;
-    gap: 16px;  /* Espacement entre les boutons */
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
+.social-icons {
+    display: flex; /* Affiche les icônes sur une seule ligne */
+    justify-content: center; /* Centre les icônes horizontalement */
+}
+.social-icon {
+    margin: 0 10px; /* Ajoute un espace entre les icônes */
+    color: #fff; /* Couleur des icônes */
+    font-size: 25px; /* Taille des icônes */
+    transition: color 0.3s ease; /* Transition pour le changement de couleur au survol */
 }
 
-/* Style général pour chaque bouton social */
-.social-btn {
-    display: flex;
+.social-icon:hover {
+    color: rgb(114,165,168); /* Couleur des icônes au survol */
+}
+
+/* Styles généraux pour les boutons */
+.social-button {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-    width: 40px;  /* Taille des boutons */
-    height: 40px; /* Taille des boutons */
-    border-radius: 50%;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    padding: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
-    text-decoration: none;
-    flex-wrap: wrap;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 10px;
+  margin: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  text-decoration: none;
 }
 
-/* Styles spécifiques pour chaque plateforme */
+.social-button img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+/* WhatsApp */
 .whatsapp-button {
-    background-color: #25d366;
+  background-color: #25d366;
 }
 
 .whatsapp-button:hover {
-    background-color: #128c7e;
-    transform: scale(1.1);
+  background-color: #128c7e;
+  transform: scale(1.1);
 }
 
+/* Facebook */
 .facebook-button {
-    background-color: #1877f2;
+  background-color: #1877f2;
 }
 
 .facebook-button:hover {
-    background-color: #155db8;
-    transform: scale(1.1);
+  background-color: #155db8;
+  transform: scale(1.1);
 }
 
+/* Twitter */
 .twitter-button {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 
 .twitter-button:hover {
-    background-color: #0d8ecf;
-    transform: scale(1.1);
+  background-color: #0d8ecf;
+  transform: scale(1.1);
 }
 
+/* Instagram */
 .instagram-button {
-    background-color: #e4405f;
+  background-color: #e4405f;
 }
 
 .instagram-button:hover {
-    background-color: #d73450;
-    transform: scale(1.1);
+  background-color: #d73450;
+  transform: scale(1.1);
 }
 
+/* TikTok */
 .tiktok-button {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 
 .tiktok-button:hover {
-    background-color: #1f1f1f;
-    transform: scale(1.1);
+  background-color: #1f1f1f;
+  transform: scale(1.1);
 }
 
-/* Style des images dans les boutons */
-.social-btn img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-/* Snapchat */
-.snapchat-button {
-    background-color: #fffc00;
-}
-
-.snapchat-button:hover {
-    background-color: #f0e100;
-    transform: scale(1.1);
+.polisecu {
+    color: white;
+    margin: 2px;
+    text-decoration: none;
 }
 
 .stat{
