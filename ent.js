@@ -25,3 +25,37 @@ document.addEventListener("click", function(event) {
         toggleMenu();
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    var searchForm = document.getElementById("market-search");
+    var searchInput = document.getElementById("market-search-input");
+    var container = document.getElementById("recommandations-container");
+
+    if (!searchForm || !searchInput || !container) {
+        return;
+    }
+
+    function filterProducts(value) {
+        var query = value.trim().toLowerCase();
+        var cards = container.querySelectorAll(".bcard");
+
+        cards.forEach(function (card) {
+            var text = card.textContent.toLowerCase();
+            card.style.display = !query || text.indexOf(query) !== -1 ? "" : "none";
+        });
+
+        var recommendations = document.getElementById("recommandations");
+        if (recommendations) {
+            recommendations.classList.toggle("search-active", Boolean(query));
+        }
+    }
+
+    searchForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        filterProducts(searchInput.value);
+    });
+
+    searchInput.addEventListener("input", function () {
+        filterProducts(searchInput.value);
+    });
+});
