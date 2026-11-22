@@ -420,23 +420,10 @@
         statistiques
     ) {
 
-        const categorieFavorite =
-            trouverCategorieFavorite(
-                statistiques
-            );
-
-
         const produitsApprecies =
             obtenirProduitsApprecies(
                 statistiques
             );
-
-
-        const categoriesAppreciees =
-            obtenirCategoriesAppreciees(
-                statistiques
-            );
-
 
         const produitsScores =
             produits.map(
@@ -449,11 +436,7 @@
                             produit,
                             statistiques,
                             {
-                                categorieFavorite,
-
-                                produitsApprecies,
-
-                                categoriesAppreciees
+                                produitsApprecies
                             }
                         );
 
