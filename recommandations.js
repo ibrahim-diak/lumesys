@@ -79,11 +79,26 @@
         new Set();
 
 
-    const produitsAffiches =
+    let produitsAffiches =
         new Set();
 
 
     let reserve = [];
+
+    let filtreCategorie =
+        null;
+
+    let filtreSousCategorie =
+        null;
+
+    let filtreRecherche =
+        "";
+
+    let nombreProduitsCategorie =
+        0;
+
+    let messageSuggestionsAffiche =
+        false;
 
 
     let positionAffichage = 0;
@@ -131,33 +146,120 @@
     function trouverCategorie(
         carte
     ) {
-
-        const section =
-            carte.closest(
-                "section"
-            );
-
-
-        if (!section) {
-
-            return "";
+        const section = carte.closest("section");
+        let titre = null;
+        if (section) {
+            section.querySelectorAll("h3").forEach(function (heading) {
+                if (!heading.closest(".bcard, .ccard") &&
+                    (heading.compareDocumentPosition(carte) & Node.DOCUMENT_POSITION_FOLLOWING)) {
+                    titre = heading;
+                }
+            });
         }
 
+        const texte = titre ? titre.textContent.trim() : "";
+        const id = titre ? titre.id.toLowerCase() : "";
+        const image = carte.querySelector("img");
+        const src = image ? image.getAttribute("src") || "" : "";
+        const dossier = src.split("/").slice(-2, -1)[0].toLowerCase().replace(/[^a-z0-9]/g, "");
+        const heading = (texte + " " + id).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const sousCategories = {
+            chosse: ["chaussures", "Chosse"],
+            chos_se1: ["chaussures", "chos_se1"],
+            chasuss1: ["chaussures", "chasuss1"],
+            snads: ["chaussures", "snads"],
+            panton: ["pantalons", "panton"],
+            sacdos: ["sacs", "Sacdos"],
+            cafpr: ["accessoires", "cafpr"],
+            ptarfum: ["accessoires", "ptarfum"],
+            ptissu: ["tissus", "ptissu"],
+            tissus_cousus: ["tissus", "Tissus_Cousus"],
+            tisbrod: ["tissus", "tisbrod"],
+            bazin: ["tissus", "bazin"],
+            chem: ["vetements", "chem"],
+            chemco: ["vetements", "chem"],
+            lacost: ["vetements", "lacost"],
+            lacostao: ["vetements", "lacostao"],
+            mailltot: ["vetements", "mailltot"],
+            survetus: ["vetements", "survetus"],
+            vesth: ["vetements", "vesth"]
+        };
+        let categorieEtSousCategorie = sousCategories[id];
 
-        const titre =
-            section.querySelector(
-                "h3"
-            );
-
-
-        if (!titre) {
-
-            return "";
+        if (!categorieEtSousCategorie) {
+            if (/chaussures[1-4]|chaussures01/.test(dossier)) {
+                categorieEtSousCategorie = ["chaussures", dossier.indexOf("02") >= 0 ? "chasuss1" : "Chosse"];
+            } else if (dossier === "sandales") {
+                categorieEtSousCategorie = ["chaussures", "snads"];
+            } else if (dossier.indexOf("chaussures") === 0) {
+                categorieEtSousCategorie = ["chaussures", "Chosse"];
+            } else if (dossier === "pantalons") {
+                categorieEtSousCategorie = ["pantalons", "panton"];
+            } else if (dossier === "sac") {
+                categorieEtSousCategorie = ["sacs", "Sacdos"];
+            } else if (dossier === "cafepresse") {
+                categorieEtSousCategorie = ["accessoires", "cafpr"];
+            } else if (dossier === "parfum") {
+                categorieEtSousCategorie = ["accessoires", "ptarfum"];
+            } else if (dossier === "tissu_brode".replace(/[^a-z0-9]/g, "")) {
+                categorieEtSousCategorie = ["tissus", "tisbrod"];
+            } else if (dossier === "tissu01" || dossier === "articleza") {
+                categorieEtSousCategorie = ["tissus", "Tissus_Cousus"];
+            } else if (dossier === "bazin") {
+                categorieEtSousCategorie = ["tissus", "bazin"];
+            } else if (dossier === "tissu") {
+                categorieEtSousCategorie = ["tissus", "ptissu"];
+            } else if (dossier === "maillot") {
+                categorieEtSousCategorie = ["vetements", "mailltot"];
+            } else if (dossier.indexOf("survet") === 0) {
+                categorieEtSousCategorie = ["vetements", "survetus"];
+            } else if (dossier === "veste") {
+                categorieEtSousCategorie = ["vetements", "vesth"];
+            } else if (dossier.indexOf("chemise") === 0) {
+                categorieEtSousCategorie = ["vetements", "chem"];
+            } else if (dossier.indexOf("lacoste") === 0) {
+                categorieEtSousCategorie = ["vetements", dossier === "lacoste01" ? "lacostao" : "lacost"];
+            }
         }
 
+        if (!categorieEtSousCategorie) {
+            if (/chaussures|sandales/.test(heading)) {
+                categorieEtSousCategorie = ["chaussures", /sandales/.test(heading) ? "snads" : /02/.test(heading) ? "chasuss1" : /01/.test(heading) ? "chos_se1" : "Chosse"];
+            } else if (/pantalons/.test(heading)) {
+                categorieEtSousCategorie = ["pantalons", "panton"];
+            } else if (/sacs/.test(heading)) {
+                categorieEtSousCategorie = ["sacs", "Sacdos"];
+            } else if (/presse cafe/.test(heading)) {
+                categorieEtSousCategorie = ["accessoires", "cafpr"];
+            } else if (/parfums/.test(heading)) {
+                categorieEtSousCategorie = ["accessoires", "ptarfum"];
+            } else if (/tissus brodes/.test(heading)) {
+                categorieEtSousCategorie = ["tissus", "tisbrod"];
+            } else if (/tissus cousus/.test(heading)) {
+                categorieEtSousCategorie = ["tissus", "Tissus_Cousus"];
+            } else if (/bazin/.test(heading)) {
+                categorieEtSousCategorie = ["tissus", "bazin"];
+            } else if (/tissus/.test(heading)) {
+                categorieEtSousCategorie = ["tissus", "ptissu"];
+            } else if (/lacoste/.test(heading)) {
+                categorieEtSousCategorie = ["vetements", /lacoste1/.test(heading) ? "lacostao" : "lacost"];
+            } else if (/chemise/.test(heading)) {
+                categorieEtSousCategorie = ["vetements", "chem"];
+            } else if (/maillots/.test(heading)) {
+                categorieEtSousCategorie = ["vetements", "mailltot"];
+            } else if (/survetements/.test(heading)) {
+                categorieEtSousCategorie = ["vetements", "survetus"];
+            } else if (/veste/.test(heading)) {
+                categorieEtSousCategorie = ["vetements", "vesth"];
+            }
+        }
 
-        return titre.textContent
-            .trim();
+        const categorie = categorieEtSousCategorie ? categorieEtSousCategorie[0] : "";
+        const sousCategorie = categorieEtSousCategorie ? categorieEtSousCategorie[1] : "";
+
+        carte.dataset.categoriePrincipale = categorie;
+        carte.dataset.sousCategorie = sousCategorie;
+        return categorie;
     }
 
 
@@ -237,6 +339,10 @@
                         trouverCategorie(
                             carte
                         ),
+
+                    sousCategorie:
+                        carte.dataset.sousCategorie ||
+                        "",
 
                     carte,
 
@@ -391,20 +497,66 @@
 
     function construireReserve() {
 
-        const produits =
+        let produits =
             [...catalogue.values()];
+
+        if (filtreCategorie) {
+            produits = produits.filter(function (produit) {
+                if (filtreSousCategorie) {
+                    return produit.sousCategorie === filtreSousCategorie;
+                }
+                return produit.categorie === filtreCategorie;
+            });
+        }
+
+        if (filtreRecherche) {
+            produits = produits.filter(function (produit) {
+                return texteRechercheProduit(produit).includes(filtreRecherche);
+            });
+        }
 
 
         const statistiques =
             LumesysComportement
                 .obtenirStatistiques();
 
+        const preferences =
+            LumesysComportement.obtenirPreferences();
 
         let classes =
             LumesysScore.classerProduits(
                 produits,
                 statistiques
             );
+
+        classes = classes.map(function (produit) {
+            const texte = texteRechercheProduit(produit);
+            const clesCategories = [
+                produit.categorie,
+                produit.sousCategorie
+            ].map(function (value) {
+                return String(value || "").toLowerCase().replace(/\s+/g, "");
+            });
+            let bonus = 0;
+
+            clesCategories.forEach(function (cle) {
+                bonus += Math.min((preferences.categories[cle] || 0) * 8, 24);
+            });
+            preferences.favoris.forEach(function (favori) {
+                if (favori.produit === produit.cle) {
+                    bonus += 30;
+                } else if (favori.categorie && clesCategories.indexOf(favori.categorie) >= 0) {
+                    bonus += 10;
+                }
+            });
+            preferences.recherches.forEach(function (recherche) {
+                if (recherche.terme && texte.indexOf(recherche.terme) >= 0) {
+                    bonus += Math.min(recherche.nombre * 3, 9);
+                }
+            });
+
+            return { ...produit, score: produit.score + bonus };
+        });
 
 
         /*
@@ -536,6 +688,29 @@
             }
         );
 
+        nombreProduitsCategorie =
+            filtreCategorie || filtreRecherche
+                ? dejaPris.size
+                : 0;
+
+        if (filtreCategorie) {
+            [...catalogue.values()]
+                .filter(function (produit) {
+                    return produit.categorie !== filtreCategorie;
+                })
+                .sort(function (a, b) {
+                    return (b.score || 0) - (a.score || 0);
+                })
+                .forEach(function (produit) {
+                    if (resultat.length >= CONFIG.nombreProduitsMaximum) {
+                        return;
+                    }
+                    if (!dejaPris.has(produit.cle)) {
+                        resultat.push(produit);
+                        dejaPris.add(produit.cle);
+                    }
+                });
+        }
 
         /*
          * Limite absolue.
@@ -546,6 +721,23 @@
                 0,
                 CONFIG.nombreProduitsMaximum
             );
+    }
+
+
+    function texteRechercheProduit(produit) {
+        const categories = window.CATEGORIES_LUMESYS || [];
+        const categorie = categories.find(function (item) {
+            return item.id === produit.categorie;
+        });
+        const sousCategorie = categorie && categorie.subs.find(function (item) {
+            return item.id === produit.sousCategorie;
+        });
+        return [
+            produit.nom,
+            produit.carte.textContent,
+            categorie ? categorie.label : "",
+            sousCategorie ? sousCategorie.label : ""
+        ].join(" ").toLowerCase();
     }
 
 
@@ -591,6 +783,10 @@
             produit.categorie ||
             "";
 
+        carte.dataset.sousCategorie =
+            produit.sousCategorie ||
+            "";
+
 
         carte.dataset.fichier =
             produit.fichier;
@@ -605,6 +801,17 @@
         carte.dataset.recommandation =
             "true";
 
+        const favori = document.createElement("button");
+        const estFavori = LumesysComportement.estFavori(produit.nom);
+        favori.type = "button";
+        favori.className = "lumesys-favorite";
+        favori.setAttribute("aria-pressed", String(estFavori));
+        favori.setAttribute(
+            "aria-label",
+            estFavori ? "Retirer des favoris" : "Ajouter aux favoris"
+        );
+        favori.textContent = estFavori ? "♥" : "♡";
+        (carte.querySelector(".ccard") || carte).appendChild(favori);
 
         return carte;
     }
@@ -653,6 +860,22 @@
         return true;
     }
 
+    function reinitialiserAffichage() {
+        container.replaceChildren();
+        produitsAffiches =
+            new Set();
+        positionAffichage =
+            0;
+        reserve =
+            [];
+        messageSuggestionsAffiche =
+            false;
+        fin.style.display =
+            "none";
+        construireReserve();
+        afficherProchainesCartes();
+    }
+
 
     /* ========================================================
        AFFICHER LES 20 SUIVANTES
@@ -684,13 +907,25 @@
         let compteur =
             0;
 
-
         while (
             compteur <
             CONFIG.produitsParAffichage &&
             positionAffichage <
             reserve.length
         ) {
+            if (
+                filtreCategorie &&
+                positionAffichage >= nombreProduitsCategorie &&
+                !messageSuggestionsAffiche
+            ) {
+                const message = document.createElement("div");
+                message.className = "lumesys-category-exhausted";
+                message.textContent = nombreProduitsCategorie
+                    ? "Vous avez découvert tous les produits de cette catégorie. Découvrez maintenant d'autres articles qui pourraient vous intéresser."
+                    : "Aucun produit de cette catégorie n'a été trouvé. Découvrez ces autres articles qui pourraient vous intéresser.";
+                container.appendChild(message);
+                messageSuggestionsAffiche = true;
+            }
 
             const produit =
                 reserve[
@@ -767,6 +1002,24 @@
             fichiers
         );
 
+        const sousCategoriesDisponibles = new Set(
+            [...catalogue.values()].map(function (produit) {
+                return produit.sousCategorie;
+            }).filter(Boolean)
+        );
+        const categoriesDisponibles = (window.CATEGORIES_LUMESYS || [])
+            .map(function (categorie) {
+                const sousCategories = categorie.subs.filter(function (sousCategorie) {
+                    return sousCategoriesDisponibles.has(sousCategorie.id);
+                });
+                return sousCategories.length
+                    ? { id: categorie.id, label: categorie.label, subs: sousCategories }
+                    : null;
+            })
+            .filter(Boolean);
+        document.dispatchEvent(new CustomEvent("lumesys-categories-disponibles", {
+            detail: { categories: categoriesDisponibles }
+        }));
 
         construireReserve();
 
@@ -836,6 +1089,43 @@
             }
         );
     }
+
+
+    document.addEventListener(
+        "lumesys-category",
+        function (event) {
+            filtreCategorie =
+                event.detail.category || null;
+            filtreSousCategorie =
+                event.detail.subcategory || null;
+            filtreRecherche =
+                "";
+            if (event.detail.category) {
+                LumesysComportement.enregistrerCategorie(event.detail.category);
+            }
+            if (event.detail.subcategory) {
+                LumesysComportement.enregistrerCategorie(event.detail.subcategory);
+            }
+            reinitialiserAffichage();
+        }
+    );
+
+
+    document.addEventListener(
+        "lumesys-search",
+        function (event) {
+            filtreRecherche =
+                event.detail.query || "";
+            filtreCategorie =
+                null;
+            filtreSousCategorie =
+                null;
+            if (event.detail.commit && filtreRecherche) {
+                LumesysComportement.enregistrerRecherche(filtreRecherche);
+            }
+            reinitialiserAffichage();
+        }
+    );
 
 
     /* ========================================================
@@ -923,60 +1213,23 @@
             false;
 
 
-        const anciennes =
-            new Set(
-                reserve
-                    .slice(
-                        positionAffichage
-                    )
-                    .map(
-                        produit =>
-                            produit.cle
-                    )
-            );
-
-
         construireReserve();
 
-
-        /*
-         * Ne jamais remettre devant le visiteur
-         * les produits déjà vus.
-         */
-
-        reserve =
-            reserve.filter(
-                produit => {
-
-                    if (
-                        produitsAffiches.has(
-                            produit.cle
-                        )
-                    ) {
-
-                        return false;
-                    }
-
-
-                    return true;
+        reserve = reserve.filter(function (produit) {
+            return !produitsAffiches.has(produit.cle);
+        });
+        nombreProduitsCategorie = filtreCategorie
+            ? reserve.filter(function (produit) {
+                if (filtreSousCategorie) {
+                    return produit.sousCategorie === filtreSousCategorie;
                 }
-            );
-
-
-        /*
-         * Si le visiteur est déjà proche
-         * de la fin de sa réserve actuelle,
-         * on lui prépare immédiatement la suite.
-         */
-
-        if (
-            reserve.length -
-            positionAffichage <
-            40
-        ) {
-
-            construireReserve();
-        }
+                return produit.categorie === filtreCategorie;
+            }).length
+            : 0;
+        positionAffichage = 0;
+        messageSuggestionsAffiche = Boolean(
+            container.querySelector(".lumesys-category-exhausted")
+        );
     }
 
 
@@ -1169,6 +1422,20 @@
                 true;
 
             recalculerSiNecessaire();
+        },
+
+        filtrerCategorie: function (categorie, sousCategorie) {
+            filtreCategorie = categorie || null;
+            filtreSousCategorie = sousCategorie || null;
+            filtreRecherche = "";
+            reinitialiserAffichage();
+        },
+
+        rechercher: function (requete) {
+            filtreRecherche = String(requete || "").trim().toLowerCase();
+            filtreCategorie = null;
+            filtreSousCategorie = null;
+            reinitialiserAffichage();
         }
 
     };
