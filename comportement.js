@@ -11,6 +11,9 @@
     const CLE =
         "lumesys_comportement_v2";
 
+    const CLE_PREFERENCES =
+        "lumesys_preferences_navigation_v1";
+
 
     const INTERVALLE_SAUVEGARDE =
         10000;
@@ -18,10 +21,13 @@
 
     let statistiques = {};
 
+    let preferences = chargerPreferences();
 
     let carteActuelle = null;
 
     let debutCarte = 0;
+
+    let produitsVusSession = new Set();
 
 
     /* ========================================================
@@ -34,6 +40,95 @@
             .trim()
             .toLowerCase()
             .replace(/\s+/g, "");
+    }
+
+
+    function chargerPreferences() {
+        try {
+            const texte = localStorage.getItem(CLE_PREFERENCES);
+            if (!texte) {
+                return { categories: {}, recherches: [], favoris: [] };
+            }
+            const valeur = JSON.parse(texte);
+            return {
+                categories: valeur.categories || {},
+                recherches: Array.isArray(valeur.recherches) ? valeur.recherches : [],
+                favoris: Array.isArray(valeur.favoris) ? valeur.favoris : []
+            };
+        } catch (erreur) {
+            console.warn("Lumesys : préférences de navigation illisibles.", erreur);
+            return { categories: {}, recherches: [], favoris: [] };
+        }
+    }
+
+
+    function sauvegarderPreferences() {
+        try {
+            localStorage.setItem(CLE_PREFERENCES, JSON.stringify(preferences));
+        } catch (erreur) {
+            console.warn("Lumesys : préférences de navigation non sauvegardées.", erreur);
+        }
+    }
+
+
+    function enregistrerCategorie(categorie) {
+        const cle = normaliser(categorie);
+        if (!cle) {
+            return;
+        }
+        preferences.categories[cle] = (preferences.categories[cle] || 0) + 1;
+        sauvegarderPreferences();
+    }
+
+
+    function enregistrerRecherche(recherche) {
+        const cle = String(recherche || "").trim().toLowerCase();
+        if (cle.length < 2) {
+            return;
+        }
+        const existante = preferences.recherches.find(function (item) {
+            return item.terme === cle;
+        });
+        if (existante) {
+            existante.nombre++;
+            existante.date = Date.now();
+        } else {
+            preferences.recherches.push({ terme: cle, nombre: 1, date: Date.now() });
+        }
+        preferences.recherches.sort(function (a, b) { return b.date - a.date; });
+        preferences.recherches = preferences.recherches.slice(0, 20);
+        sauvegarderPreferences();
+    }
+
+
+    function basculerFavori(produit, categorie) {
+        const cle = normaliser(produit);
+        if (!cle) {
+            return false;
+        }
+        const index = preferences.favoris.findIndex(function (item) {
+            return item.produit === cle;
+        });
+        if (index >= 0) {
+            preferences.favoris.splice(index, 1);
+            sauvegarderPreferences();
+            return false;
+        }
+        preferences.favoris.push({
+            produit: cle,
+            categorie: normaliser(categorie),
+            date: Date.now()
+        });
+        sauvegarderPreferences();
+        return true;
+    }
+
+
+    function estFavori(produit) {
+        const cle = normaliser(produit);
+        return preferences.favoris.some(function (item) {
+            return item.produit === cle;
+        });
     }
 
 
@@ -141,18 +236,6 @@
             Date.now();
 
 
-        if (categorie) {
-
-            if (!data.categories[categorie]) {
-
-                data.categories[categorie] = 0;
-            }
-
-
-            data.categories[categorie]++;
-        }
-
-
         sauvegarder();
     }
 
@@ -187,6 +270,7 @@
 
 
             data.categories[categorie]++;
+            enregistrerCategorie(categorie);
         }
 
 
@@ -381,6 +465,11 @@
                                 carte.dataset.categorie ||
                                 "";
 
+                            if (produitsVusSession.has(produit)) {
+                                return;
+                            }
+                            produitsVusSession.add(produit);
+
 
                             enregistrerVue(
                                 produit,
@@ -424,6 +513,29 @@
     document.addEventListener(
         "click",
         function (event) {
+
+            const boutonFavori =
+                event.target.closest(".lumesys-favorite");
+
+            if (boutonFavori) {
+                event.preventDefault();
+                event.stopPropagation();
+                const carteFavori = boutonFavori.closest("[data-produit]");
+                if (!carteFavori) {
+                    return;
+                }
+                const actif = basculerFavori(
+                    carteFavori.dataset.produit,
+                    carteFavori.dataset.categorie || ""
+                );
+                boutonFavori.setAttribute("aria-pressed", String(actif));
+                boutonFavori.setAttribute(
+                    "aria-label",
+                    actif ? "Retirer des favoris" : "Ajouter aux favoris"
+                );
+                boutonFavori.textContent = actif ? "♥" : "♡";
+                return;
+            }
 
             const carte =
                 event.target.closest(
@@ -485,6 +597,18 @@
 
 
         enregistrerVue: enregistrerVue,
+
+        enregistrerCategorie: enregistrerCategorie,
+
+        enregistrerRecherche: enregistrerRecherche,
+
+        obtenirPreferences: function () {
+            return preferences;
+        },
+
+        basculerFavori: basculerFavori,
+
+        estFavori: estFavori,
 
 
         enregistrerClic: enregistrerClic,
