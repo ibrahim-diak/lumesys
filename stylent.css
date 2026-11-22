@@ -797,3 +797,477 @@ footer p {
     color: white;
     background-color: black;
 }
+
+/* ============================================================
+   LUMESYS MARKETPLACE - PRESENTATION COMMERCIALE
+   ============================================================ */
+
+body {
+    background: #f4f6f8;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: 72px;
+    padding: 10px 24px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e9ef;
+    box-shadow: 0 2px 12px rgba(13, 38, 76, 0.08);
+}
+
+header h1 {
+    display: none;
+}
+
+.market-header {
+    max-width: 1500px;
+    height: 52px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 230px minmax(280px, 720px) 250px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #153a72;
+    text-decoration: none;
+    font-size: 29px;
+    font-family: 'Roboto-Black', Arial, sans-serif;
+    font-weight: 800;
+}
+
+.brand-mark {
+    width: 38px;
+    height: 38px;
+    border: 4px solid #153a72;
+    border-bottom: 0;
+    border-radius: 5px 5px 0 0;
+    position: relative;
+}
+
+.brand-mark::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 19px;
+    left: 7px;
+    top: -15px;
+    border: 4px solid #153a72;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+}
+
+.brand-mark::after {
+    content: "";
+    position: absolute;
+    width: 44px;
+    height: 22px;
+    left: -7px;
+    bottom: -5px;
+    border-radius: 3px 3px 8px 8px;
+    background: #ff7913;
+    border: 3px solid #ffffff;
+}
+
+.market-search {
+    height: 44px;
+    display: grid;
+    grid-template-columns: 1fr 48px;
+    border: 2px solid #ff7913;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.market-search input {
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    padding: 0 16px;
+    font-size: 15px;
+    color: #24344d;
+}
+
+.market-search button {
+    border: 0;
+    border-radius: 0;
+    background: #ff7913;
+    color: #fff;
+    font-size: 18px;
+    padding: 0;
+}
+
+.market-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 18px;
+}
+
+.market-actions a {
+    min-width: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #153a72;
+    text-decoration: none;
+    font-size: 24px;
+    line-height: 1;
+}
+
+.market-actions small {
+    margin-top: 5px;
+    font-size: 11px;
+}
+
+.menu-icon {
+    display: none;
+}
+
+.sidebar {
+    width: 210px;
+    height: calc(100vh - 72px);
+    top: 72px;
+    padding-top: 10px;
+    background: #ffffff;
+    border-right: 1px solid #e5e9ef;
+    box-shadow: 4px 0 12px rgba(13, 38, 76, 0.04);
+    z-index: 40;
+}
+
+.sidebar ul li {
+    padding: 0;
+}
+
+.sidebar ul li a {
+    min-height: 39px;
+    display: flex;
+    align-items: center;
+    padding: 8px 14px;
+    color: #26354a;
+    font-size: 14px;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li:first-child a {
+    background: #fff4eb;
+    color: #e45f00;
+}
+
+.sidebar ul li a:hover {
+    padding-left: 18px;
+}
+
+.sidebar .sub-menu {
+    display: none;
+}
+
+#accueil,
+#categorie,
+#ventev,
+#annonces,
+#aide,
+#achatv,
+.stat {
+    display: none;
+}
+
+#recommandations {
+    min-height: calc(100vh - 72px);
+    margin: 0 0 0 210px;
+    padding: 14px 16px 24px;
+    background: #f4f6f8;
+    border-radius: 0;
+    box-shadow: none;
+    text-align: left;
+}
+
+#recommandations h2 {
+    margin: 0 0 10px;
+    color: #153a72;
+    font-size: 17px;
+}
+
+#recommandations-loading,
+#recommandations-fin {
+    display: none;
+}
+
+.ccontainer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    overflow: visible;
+    flex-wrap: unset;
+}
+
+.bcard {
+    min-width: 0;
+    margin: 0;
+}
+
+.ccard {
+    width: 100%;
+    height: 290px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 8px;
+    border: 1px solid #edf0f4;
+    border-radius: 7px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(30, 55, 90, 0.07);
+    text-align: left;
+}
+
+.ccard:hover {
+    border-color: #ffb078;
+    box-shadow: 0 5px 16px rgba(30, 55, 90, 0.13);
+}
+
+.ccard > a:first-child {
+    display: block;
+    height: 154px;
+    margin: 0 0 7px;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #f7f8fa;
+}
+
+.product-image {
+    width: 100%;
+    height: 154px;
+    margin: 0;
+    border: 0;
+    object-fit: contain;
+}
+
+.ccard h3 {
+    min-height: 22px;
+    margin: 0 0 3px;
+    overflow: hidden;
+    color: #24344d;
+    font-size: 14px;
+    line-height: 1.35;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.ccard p {
+    min-height: 50px;
+    margin: 0 0 5px;
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.25;
+}
+
+.ccard p span {
+    display: block;
+}
+
+.ccard p span:last-child {
+    display: none;
+}
+
+.ccard p span:first-child {
+    color: #8b95a5;
+}
+
+.ccard p span:nth-child(2) {
+    color: #e75d00;
+    font-size: 16px;
+}
+
+.ccard .bouton {
+    width: 100%;
+    margin-top: auto;
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: #ff7913;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.ccard .bouton:hover {
+    background: #e85f00;
+}
+
+footer {
+    margin-left: 210px;
+}
+
+@media (max-width: 1280px) {
+    .ccontainer {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .market-header {
+        grid-template-columns: 205px minmax(260px, 1fr) 220px;
+    }
+}
+
+@media (max-width: 1024px) {
+    header {
+        height: auto;
+        min-height: 72px;
+        padding: 8px 12px;
+    }
+
+    .market-header {
+        height: auto;
+        grid-template-columns: 180px minmax(220px, 1fr) 150px;
+        gap: 10px;
+    }
+
+    .brand {
+        font-size: 24px;
+    }
+
+    .market-actions {
+        gap: 8px;
+    }
+
+    .sidebar {
+        display: block;
+        width: 190px;
+    }
+
+    #recommandations,
+    footer {
+        margin-left: 190px;
+    }
+
+    .ccontainer {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .ccard {
+        height: 300px;
+    }
+}
+
+@media (max-width: 700px) {
+    header {
+        position: sticky;
+        height: 112px;
+    }
+
+    .market-header {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: 44px 44px;
+    }
+
+    .brand {
+        grid-column: 1;
+        font-size: 22px;
+    }
+
+    .brand-mark {
+        width: 32px;
+        height: 32px;
+    }
+
+    .market-search {
+        grid-column: 1 / 3;
+        grid-row: 2;
+        height: 40px;
+    }
+
+    .market-actions {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .market-actions a {
+        min-width: 38px;
+        font-size: 20px;
+    }
+
+    .market-actions small {
+        display: none;
+    }
+
+    .menu-icon {
+        display: block;
+        position: fixed;
+        top: 119px;
+        left: 8px;
+        z-index: 55;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        background: #153a72;
+        border-radius: 6px;
+    }
+
+    .sidebar {
+        width: 0;
+        top: 112px;
+        height: calc(100vh - 112px);
+        z-index: 54;
+    }
+
+    .sidebar.active {
+        width: 220px;
+    }
+
+    #recommandations,
+    footer {
+        margin-left: 0;
+    }
+
+    #recommandations {
+        min-height: calc(100vh - 112px);
+        padding: 12px 8px 20px;
+    }
+
+    #recommandations h2 {
+        padding-left: 48px;
+    }
+
+    .ccontainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .ccard {
+        height: 272px;
+        padding: 6px;
+    }
+
+    .ccard > a:first-child,
+    .product-image {
+        height: 150px;
+    }
+
+    .ccard h3 {
+        font-size: 13px;
+    }
+
+    .ccard p {
+        min-height: 44px;
+    }
+
+    .ccard p span:nth-child(2) {
+        font-size: 14px;
+    }
+
+    .ccard .bouton {
+        min-height: 34px;
+        font-size: 12px;
+    }
+}
