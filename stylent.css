@@ -1070,15 +1070,11 @@ header h1 {
 }
 
 .ccard p span {
-    display: block;
-}
-
-.ccard p span:last-child {
-    display: none;
+    display: inline;
 }
 
 .ccard p span:first-child {
-    color: #8b95a5;
+    margin-right: 4px;
 }
 
 .ccard p span:nth-child(2) {
