@@ -30,7 +30,6 @@
 
     };
 
-
     /* ========================================================
        HTML
        ======================================================== */
@@ -52,6 +51,11 @@
             "recommandations-fin"
         );
 
+    const statutCatalogue =
+        document.getElementById(
+            "recommandations-status"
+        );
+
 
     if (!container) {
 
@@ -67,9 +71,10 @@
        MÉMOIRES
        ======================================================== */
 
-    const catalogue =
+    let catalogue =
         new Map();
 
+    const emplacementsEnAttente = new Map();
 
     const fichiersAnalyses =
         new Set();
@@ -84,6 +89,10 @@
 
 
     let reserve = [];
+
+    let reserveHistorique = [];
+
+    let positionHistorique = 0;
 
     let filtreCategorie =
         null;
@@ -106,6 +115,14 @@
 
     let analyseEnCours = false;
 
+    let actualisationEnCours = null;
+
+    let fichiersCatalogueCourants = [];
+
+    let catalogueInitialise = false;
+
+    let tentativeCatalogueAReprendre = false;
+
 
     let chargementEnCours = false;
 
@@ -114,10 +131,6 @@
 
 
     let dernierRecalcul = 0;
-
-
-    let cleHoraireActuelle =
-        LumesysVariation.obtenirCleHoraire();
 
 
     /* ========================================================
@@ -172,6 +185,7 @@
             sacdos: ["sacs", "Sacdos"],
             cafpr: ["accessoires", "cafpr"],
             ptarfum: ["accessoires", "ptarfum"],
+            tapfem: ["accessoires", "tapfem"],
             ptissu: ["tissus", "ptissu"],
             tissus_cousus: ["tissus", "Tissus_Cousus"],
             tisbrod: ["tissus", "tisbrod"],
@@ -201,6 +215,8 @@
                 categorieEtSousCategorie = ["accessoires", "cafpr"];
             } else if (dossier === "parfum") {
                 categorieEtSousCategorie = ["accessoires", "ptarfum"];
+            } else if (dossier === "tapfem" || dossier === "tappettes") {
+                categorieEtSousCategorie = ["accessoires", "tapfem"];
             } else if (dossier === "tissu_brode".replace(/[^a-z0-9]/g, "")) {
                 categorieEtSousCategorie = ["tissus", "tisbrod"];
             } else if (dossier === "tissu01" || dossier === "articleza") {
@@ -233,6 +249,8 @@
                 categorieEtSousCategorie = ["accessoires", "cafpr"];
             } else if (/parfums/.test(heading)) {
                 categorieEtSousCategorie = ["accessoires", "ptarfum"];
+            } else if (/tappettes/.test(heading)) {
+                categorieEtSousCategorie = ["accessoires", "tapfem"];
             } else if (/tissus brodes/.test(heading)) {
                 categorieEtSousCategorie = ["tissus", "tisbrod"];
             } else if (/tissus cousus/.test(heading)) {
@@ -263,13 +281,34 @@
     }
 
 
+    function extrairePrix(carte) {
+        const candidats = Array.from(carte.querySelectorAll("p span, p.pprix"))
+            .filter(function (element) {
+                const texte = element.textContent.trim();
+                const style = element.getAttribute("style") || "";
+                return /(?:FCFA|F\s*CFA|CFA)/i.test(texte)
+                    && !/r[eé]duction/i.test(texte)
+                    && !/line-through/i.test(style);
+            });
+        const texte = candidats.length
+            ? candidats[candidats.length - 1].textContent
+            : "";
+        const correspondance = texte.match(/(\d[\d\s.,]*)\s*(?:FCFA|F\s*CFA|CFA)/i);
+        if (!correspondance) {
+            return null;
+        }
+        const montant = Number(correspondance[1].replace(/[^\d]/g, ""));
+        return Number.isSafeInteger(montant) && montant > 0 ? montant : null;
+    }
+
     /* ========================================================
        EXTRAIRE LES CARTES
        ======================================================== */
 
     function extraireCartes(
         documentHTML,
-        fichier
+        fichier,
+        catalogueCible
     ) {
 
         const cartes =
@@ -315,9 +354,7 @@
                  * ZÉRO DOUBLON.
                  */
 
-                if (
-                    catalogue.has(cle)
-                ) {
+                if (catalogueCible.has(cle)) {
 
                     return;
                 }
@@ -340,6 +377,9 @@
                             carte
                         ),
 
+                    prix:
+                        extrairePrix(carte),
+
                     sousCategorie:
                         carte.dataset.sousCategorie ||
                         "",
@@ -354,17 +394,12 @@
                 };
 
 
-                catalogue.set(
+                catalogueCible.set(
                     cle,
                     produit
                 );
 
-
-                LumesysCache
-                    .enregistrerEmplacement(
-                        nom,
-                        fichier
-                    );
+                emplacementsEnAttente.set(nom, fichier);
             }
         );
     }
@@ -375,40 +410,29 @@
        ======================================================== */
 
     async function analyserFichier(
-        fichier
+        fichier,
+        catalogueCible,
+        analysesCible,
+        fichiersValidesCible
     ) {
 
-        if (
-            fichiersAnalyses.has(
-                fichier
-            )
-        ) {
-
-            return;
+        if (analysesCible.has(fichier)) {
+            return fichiersValidesCible.has(fichier);
         }
 
-
-        fichiersAnalyses.add(
-            fichier
-        );
+        analysesCible.add(fichier);
 
 
-        const texte =
-            await LumesysCache
-                .chargerFichier(
-                    fichier
-                );
+        const texte = await LumesysCache.chargerFichier(fichier);
 
 
         if (!texte) {
-
-            return;
+            analysesCible.delete(fichier);
+            return false;
         }
 
 
-        fichiersExistants.add(
-            fichier
-        );
+        fichiersValidesCible.add(fichier);
 
 
         const documentHTML =
@@ -419,8 +443,11 @@
 
         extraireCartes(
             documentHTML,
-            fichier
+            fichier,
+            catalogueCible
         );
+
+        return true;
     }
 
 
@@ -429,14 +456,23 @@
        ======================================================== */
 
     async function analyserCatalogue(
-        fichiers
+        fichiers,
+        catalogueCible
     ) {
 
         if (analyseEnCours) {
 
-            return;
+            return false;
         }
 
+        const cible = catalogueCible || catalogue;
+        const analyses = cible === catalogue
+            ? fichiersAnalyses
+            : new Set();
+        const fichiersValides = cible === catalogue
+            ? fichiersExistants
+            : new Set();
+        let analyseComplete = true;
 
         analyseEnCours =
             true;
@@ -459,14 +495,23 @@
                     );
 
 
-                await Promise.all(
+                const resultats = await Promise.all(
                     lot.map(
                         fichier =>
                             analyserFichier(
-                                fichier
+                                fichier,
+                                cible,
+                                analyses,
+                                fichiersValides
                             )
                     )
                 );
+
+                if (resultats.some(function (resultat) {
+                    return !resultat;
+                })) {
+                    analyseComplete = false;
+                }
 
 
                 /*
@@ -485,9 +530,62 @@
 
         } finally {
 
+            if (emplacementsEnAttente.size) {
+                LumesysCache.enregistrerEmplacements(
+                    Array.from(emplacementsEnAttente.entries())
+                );
+                emplacementsEnAttente.clear();
+            }
+
             analyseEnCours =
                 false;
         }
+
+        return analyseComplete;
+    }
+
+
+    function identifiantProduit(produit) {
+        return String(produit.id || produit.cle || "");
+    }
+
+
+    function diversifierParCategorie(produits, prioriserAnciennete) {
+        const restants = produits.slice();
+        const resultat = [];
+        const comptes = new Map();
+        const positions = new Map(produits.map(function (produit, index) {
+            return [produit, index];
+        }));
+
+        while (restants.length) {
+            let meilleurIndex = 0;
+            let meilleurScore = -Infinity;
+
+            restants.forEach(function (produit, index) {
+                const categorie = String(
+                    produit.categorie || produit.sousCategorie || "autres"
+                ).toLowerCase();
+                const nombreDejaChoisi = comptes.get(categorie) || 0;
+                const score = prioriserAnciennete
+                    ? -positions.get(produit) - nombreDejaChoisi * 2
+                    : (Number(produit.score) || 0) - nombreDejaChoisi * 12;
+
+                if (score > meilleurScore) {
+                    meilleurScore = score;
+                    meilleurIndex = index;
+                }
+            });
+
+            const produit = restants.splice(meilleurIndex, 1)[0];
+            const categorie = String(
+                produit.categorie || produit.sousCategorie || "autres"
+            ).toLowerCase();
+            comptes.set(categorie, (comptes.get(categorie) || 0) + 1);
+            resultat.push(produit);
+        }
+
+        return resultat;
     }
 
 
@@ -560,7 +658,7 @@
 
 
         /*
-         * Mélange horaire.
+         * Variation déterministe selon le visiteur.
          */
 
         classes =
@@ -712,15 +810,42 @@
                 });
         }
 
-        /*
-         * Limite absolue.
-         */
+        const produitsClasses =
+            resultat.slice(0, CONFIG.nombreProduitsMaximum);
 
-        reserve =
-            resultat.slice(
-                0,
-                CONFIG.nombreProduitsMaximum
-            );
+        if (filtreCategorie || filtreRecherche) {
+            reserve = produitsClasses;
+            return;
+        }
+
+        const historique = window.LumesysComportement &&
+            typeof window.LumesysComportement.obtenirHistoriqueVues === "function"
+            ? window.LumesysComportement.obtenirHistoriqueVues()
+            : [];
+        const datesVues = new Map(
+            historique.map(function (vue) {
+                return [String(vue.id), Number(vue.viewedAt) || 0];
+            })
+        );
+        const produitsNonVus = [];
+        const produitsVus = [];
+
+        produitsClasses.forEach(function (produit) {
+            if (datesVues.has(identifiantProduit(produit))) {
+                produitsVus.push(produit);
+            } else {
+                produitsNonVus.push(produit);
+            }
+        });
+
+        produitsVus.sort(function (a, b) {
+            return datesVues.get(identifiantProduit(a)) -
+                datesVues.get(identifiantProduit(b));
+        });
+
+        reserve = diversifierParCategorie(produitsNonVus).concat(
+            diversifierParCategorie(produitsVus, true)
+        ).slice(0, CONFIG.nombreProduitsMaximum);
     }
 
 
@@ -740,6 +865,52 @@
         ].join(" ").toLowerCase();
     }
 
+    function creerIconeAction(type) {
+        const espaceSVG = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(espaceSVG, "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("class", "market-action-icon");
+        svg.setAttribute("aria-hidden", "true");
+        svg.setAttribute("focusable", "false");
+
+        const forme = document.createElementNS(espaceSVG, "path");
+        forme.setAttribute(
+            "d",
+            type === "eye"
+                ? "M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                : type === "phone"
+                    ? "M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.63a2 2 0 0 1-.45 2.11L8 9.73a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.85.29 1.73.5 2.63.62A2 2 0 0 1 22 16.92Z"
+                    : "M3 3h2l2.2 11.2a2 2 0 0 0 2 1.6h8.5a2 2 0 0 0 1.9-1.4L22 7H6"
+        );
+        svg.appendChild(forme);
+
+        if (type === "eye") {
+            const pupil = document.createElementNS(espaceSVG, "circle");
+            pupil.setAttribute("cx", "12");
+            pupil.setAttribute("cy", "12");
+            pupil.setAttribute("r", "3");
+            svg.appendChild(pupil);
+        } else if (type === "cart") {
+            ["10", "18"].forEach(function (x) {
+                const roue = document.createElementNS(espaceSVG, "circle");
+                roue.setAttribute("cx", x);
+                roue.setAttribute("cy", "20");
+                roue.setAttribute("r", "1.5");
+                svg.appendChild(roue);
+            });
+        }
+
+        svg.querySelectorAll("path, circle").forEach(function (element) {
+            element.setAttribute("fill", "none");
+            element.setAttribute("stroke", "currentColor");
+            element.setAttribute("stroke-width", "1.8");
+            element.setAttribute("stroke-linecap", "round");
+            element.setAttribute("stroke-linejoin", "round");
+        });
+
+        return svg;
+    }
+
 
     /* ========================================================
        CLONER UNE CARTE
@@ -753,6 +924,14 @@
             produit.carte.cloneNode(
                 true
             );
+
+        carte.querySelectorAll('a[href*="wa.me/"]').forEach(function (lien) {
+            const destination = new URL(lien.href, window.location.href);
+            if (destination.hostname.toLowerCase() === "wa.me") {
+                destination.pathname = "/22362002473";
+                lien.href = destination.href;
+            }
+        });
 
 
         /*
@@ -778,6 +957,12 @@
         carte.dataset.produit =
             produit.nom;
 
+        carte.dataset.produitId =
+            produit.id ||
+            produit.cle;
+
+        carte.dataset.prix =
+            String(produit.prix || extrairePrix(carte) || "");
 
         carte.dataset.categorie =
             produit.categorie ||
@@ -801,19 +986,146 @@
         carte.dataset.recommandation =
             "true";
 
+        const image = carte.querySelector("img");
+        carte.querySelectorAll("img").forEach(function (imageProduit) {
+            imageProduit.loading = "lazy";
+            imageProduit.decoding = "async";
+        });
+        if (image) {
+            carte.dataset.image = image.getAttribute("src") || "";
+            carte.dataset.imageDetail = produit.imageDetail ||
+                (image.getAttribute("src") || "").replace(/(^|\/)tn_/, "$1");
+        }
+
+        const actions = document.createElement("div");
+        actions.className = "market-card-actions";
+
+        const acheter = carte.querySelector(".bouton");
+        if (acheter) {
+            actions.appendChild(acheter);
+        }
+
         const favori = document.createElement("button");
-        const estFavori = LumesysComportement.estFavori(produit.nom);
+        const estFavori = window.LumesysCommerce
+            ? window.LumesysCommerce.isFavorite(produit.id || produit.cle)
+            : LumesysComportement.estFavori(produit.nom);
         favori.type = "button";
         favori.className = "lumesys-favorite";
+        favori.dataset.productId = produit.id || produit.cle;
         favori.setAttribute("aria-pressed", String(estFavori));
         favori.setAttribute(
             "aria-label",
             estFavori ? "Retirer des favoris" : "Ajouter aux favoris"
         );
         favori.textContent = estFavori ? "♥" : "♡";
-        (carte.querySelector(".ccard") || carte).appendChild(favori);
+
+        const details = document.createElement("button");
+        details.type = "button";
+        details.className = "market-card-icon-button lumesys-product-details";
+        details.dataset.productId = produit.id || produit.cle;
+        details.setAttribute("aria-label", "Voir les détails de " + produit.nom);
+        details.dataset.tooltip = "Voir les détails";
+        details.title = "Voir les détails du produit";
+        details.appendChild(creerIconeAction("eye"));
+
+        const panier = document.createElement("button");
+        panier.type = "button";
+        panier.className = "market-card-icon-button lumesys-cart-add";
+        panier.dataset.productId = produit.id || produit.cle;
+        panier.setAttribute("aria-label", "Ajouter " + produit.nom + " au panier");
+        panier.dataset.tooltip = "Ajouter au panier";
+        panier.title = "Ajouter au panier";
+        panier.appendChild(creerIconeAction("cart"));
+        if (!carte.dataset.prix) {
+            panier.disabled = true;
+            panier.title = "Prix indisponible pour cet article";
+            panier.dataset.tooltip = "Prix indisponible";
+        }
+
+        const appel = document.createElement("a");
+        appel.href = "tel:+22376856631";
+        appel.className = "market-card-icon-button market-phone-action";
+        appel.setAttribute("aria-label", "Appeler le vendeur au +223 76 85 66 31");
+        appel.dataset.tooltip = "Appeler le vendeur";
+        appel.title = "Appeler le vendeur";
+        appel.appendChild(creerIconeAction("phone"));
+
+        actions.appendChild(details);
+        actions.appendChild(panier);
+        actions.appendChild(appel);
+        actions.appendChild(favori);
+        (carte.querySelector(".ccard") || carte).appendChild(actions);
 
         return carte;
+    }
+
+    function rendreHistoriqueVues(reinitialiser) {
+        const route = decodeURIComponent(window.location.hash.slice(1)).toLowerCase();
+        if (route !== "historique") {
+            return;
+        }
+
+        const conteneur = document.getElementById("history-products");
+        const vide = document.getElementById("history-empty");
+        const statut = document.getElementById("history-status");
+        const boutonPlus = document.getElementById("history-more");
+        if (!conteneur || !vide || !statut || !boutonPlus) {
+            return;
+        }
+
+        if (!catalogue.size) {
+            conteneur.replaceChildren();
+            vide.hidden = false;
+            vide.textContent = "Le catalogue est en cours de chargement.";
+            statut.textContent = "";
+            boutonPlus.hidden = true;
+            return;
+        }
+
+        const historique = window.LumesysComportement &&
+            typeof window.LumesysComportement.obtenirHistoriqueVues === "function"
+            ? window.LumesysComportement.obtenirHistoriqueVues()
+            : [];
+        const produitsParId = new Map();
+        catalogue.forEach(function (produit) {
+            produitsParId.set(identifiantProduit(produit), produit);
+        });
+
+        if (reinitialiser) {
+            reserveHistorique = historique
+                .slice()
+                .sort(function (a, b) {
+                    return Number(b.viewedAt) - Number(a.viewedAt);
+                })
+                .map(function (vue) {
+                    return produitsParId.get(String(vue.id));
+                })
+                .filter(Boolean);
+            positionHistorique = 0;
+            conteneur.replaceChildren();
+        }
+
+        const prochainIndex = Math.min(
+            positionHistorique + CONFIG.produitsParAffichage,
+            reserveHistorique.length
+        );
+        const fragment = document.createDocumentFragment();
+        reserveHistorique.slice(positionHistorique, prochainIndex).forEach(function (produit) {
+            fragment.appendChild(clonerCarte(produit));
+        });
+        conteneur.appendChild(fragment);
+        positionHistorique = prochainIndex;
+
+        const indisponibles = historique.length - reserveHistorique.length;
+        statut.textContent = reserveHistorique.length
+            ? reserveHistorique.length + " produit(s) consulté(s) disponible(s)." +
+                (indisponibles ? " " + indisponibles + " produit(s) ne figurent plus au catalogue." : "")
+            : "";
+        vide.hidden = reserveHistorique.length > 0;
+        vide.textContent = historique.length
+            ? "Aucun des produits consultés n’est actuellement disponible dans le catalogue."
+            : "Aucun produit consulté n’est enregistré sur cet appareil.";
+        boutonPlus.hidden = positionHistorique >= reserveHistorique.length;
     }
 
 
@@ -979,31 +1291,123 @@
     }
 
 
-    /* ========================================================
-       PRÉPARATION DES 500
-       ======================================================== */
+    function ajouterNouveauxProduits() {
+        const articles = [
+            {
+                titre: "Chaussure",
+                prix: 25000,
+                categorie: "chaussures",
+                sousCategorie: "Chosse",
+                dossier: "Articles/chaussure1",
+                images: [
+                    "tn_IMG-20261123-WA0000.jpg",
+                    "tn_IMG-20261123-WA0001.jpg",
+                    "tn_IMG-20261123-WA0002.jpg",
+                    "tn_IMG-20261123-WA0003.jpg",
+                    "tn_IMG-20261123-WA0004.jpg",
+                    "tn_IMG-20261123-WA0005.jpg",
+                    "tn_IMG-20261123-WA0006.jpg",
+                    "tn_IMG-20261123-WA0018.jpg",
+                    "tn_IMG-20261123-WA0019.jpg",
+                    "tn_IMG-20261123-WA0020.jpg",
+                    "tn_IMG-20261123-WA0021.jpg",
+                    "tn_IMG-20261123-WA0022.jpg",
+                    "tn_IMG-20261123-WA0023.jpg",
+                    "tn_IMG-20261123-WA0024.jpg",
+                    "tn_IMG-20261123-WA0025.jpg"
+                ]
+            },
+            {
+                titre: "Costume",
+                prix: 45000,
+                categorie: "vetements",
+                sousCategorie: "costumes",
+                dossier: "Articles/costume",
+                images: [
+                    "tn_IMG-20261123-WA0007.jpg",
+                    "tn_IMG-20261123-WA0008.jpg",
+                    "tn_IMG-20261123-WA0009.jpg",
+                    "tn_IMG-20261123-WA0010.jpg",
+                    "tn_IMG-20261123-WA0011.jpg",
+                    "tn_IMG-20261123-WA0012.jpg",
+                    "tn_IMG-20261123-WA0013.jpg",
+                    "tn_IMG-20261123-WA0014.jpg",
+                    "tn_IMG-20261123-WA0015.jpg",
+                    "tn_IMG-20261123-WA0016.jpg",
+                    "tn_IMG-20261123-WA0017.jpg"
+                ]
+            }
+        ];
 
-    async function preparer500() {
+        articles.forEach(function (article) {
+            article.images.forEach(function (fichier, index) {
+                const nom = article.titre + " " + String(index + 1).padStart(2, "0");
+                const cle = LumesysCache.normaliserProduit(nom);
+                if (catalogue.has(cle)) {
+                    return;
+                }
 
-        loading.style.display =
-            "block";
+                const image = article.dossier + "/" + fichier;
+                const imageDetail = image.replace(/(^|\/)tn_/, "$1");
+                const carte = document.createElement("div");
+                carte.className = "bcard";
+                const contenu = document.createElement("div");
+                contenu.className = "ccard";
+                contenu.classList.add(
+                    index % 3 === 0
+                        ? "lumesys-large-image-card"
+                        : index % 3 === 1
+                            ? "lumesys-square-card"
+                            : "lumesys-classic-card"
+                );
+                const lienImage = document.createElement("a");
+                lienImage.href = "#product-details";
+                lienImage.dataset.productDetail = "true";
+                const photo = document.createElement("img");
+                photo.className = "product-image";
+                photo.src = image;
+                photo.alt = nom;
+                photo.loading = "lazy";
+                lienImage.appendChild(photo);
+                const titre = document.createElement("h3");
+                titre.textContent = nom;
+                const prix = document.createElement("p");
+                prix.className = "pprix";
+                prix.textContent = article.prix.toLocaleString("fr-FR") + " FCFA";
+                const acheter = document.createElement("a");
+                acheter.className = "bouton";
+                acheter.href = "https://wa.me/22362002473?text=" + encodeURIComponent("Je souhaite acheter " + nom);
+                acheter.target = "_blank";
+                acheter.rel = "noopener noreferrer";
+                acheter.textContent = "Acheter";
+                contenu.appendChild(lienImage);
+                contenu.appendChild(titre);
+                contenu.appendChild(prix);
+                contenu.appendChild(acheter);
+                carte.appendChild(contenu);
+                carte.dataset.prix = String(article.prix);
+                carte.dataset.imageDetail = imageDetail;
 
+                catalogue.set(cle, {
+                    cle: cle,
+                    id: article.dossier + "/" + fichier.replace(/^tn_/, ""),
+                    nom: nom,
+                    fichier: article.dossier,
+                    categorie: article.categorie,
+                    sousCategorie: article.sousCategorie,
+                    prix: article.prix,
+                    imageDetail: imageDetail,
+                    carte: carte,
+                    nouveau: true,
+                    score: 0
+                });
+            });
+        });
+    }
 
-        const fichiers =
-            LumesysCache
-                .obtenirListeFichiers();
-
-
-        /*
-         * Analyse en arrière-plan.
-         */
-
-        await analyserCatalogue(
-            fichiers
-        );
-
+    function publierCategoriesDisponibles() {
         const sousCategoriesDisponibles = new Set(
-            [...catalogue.values()].map(function (produit) {
+            Array.from(catalogue.values()).map(function (produit) {
                 return produit.sousCategorie;
             }).filter(Boolean)
         );
@@ -1017,78 +1421,221 @@
                     : null;
             })
             .filter(Boolean);
+
         document.dispatchEvent(new CustomEvent("lumesys-categories-disponibles", {
             detail: { categories: categoriesDisponibles }
         }));
-
-        construireReserve();
-
-
-        loading.style.display =
-            "none";
+    }
 
 
-        /*
-         * Les 20 premières.
-         */
+    function afficherStatutCatalogue(message, estPerime) {
+        if (!statutCatalogue) {
+            return;
+        }
 
-        afficherProchainesCartes();
+        statutCatalogue.textContent = message || "";
+        statutCatalogue.hidden = !message;
+        statutCatalogue.classList.toggle("is-stale", Boolean(estPerime));
+    }
 
 
-        /*
-         * Continuer le travail après
-         * l'affichage initial.
-         */
+    function creerSignatureCatalogue(produits) {
+        return Array.from(produits.values()).filter(function (produit) {
+            return !produit.nouveau;
+        }).map(function (produit) {
+            return JSON.stringify([
+                produit.id || produit.cle,
+                produit.nom,
+                produit.prix,
+                produit.categorie,
+                produit.sousCategorie,
+                produit.fichier,
+                produit.imageDetail || "",
+                produit.carte ? produit.carte.outerHTML : ""
+            ]);
+        }).sort().join("\n");
+    }
 
-        setTimeout(
-            function () {
 
-                recalculerSiNecessaire();
+    async function actualiserCatalogue(fichiers) {
+        if (actualisationEnCours) {
+            return actualisationEnCours;
+        }
 
-            },
-            100
-        );
+        const memoireAvantActualisation = new Map(LumesysCache.fichiersMemoire);
+        const catalogueAvantActualisation = catalogue;
+        const signatureAvantActualisation =
+            creerSignatureCatalogue(catalogueAvantActualisation);
+
+        actualisationEnCours = (async function () {
+            afficherStatutCatalogue("Vérification des mises à jour du catalogue…", true);
+
+            try {
+                const pages = await LumesysCache.revaliderCatalogue(fichiers);
+                const catalogueActualise = new Map();
+                LumesysCache.chargerCatalogueEnMemoire(pages, fichiers);
+
+                const analyseComplete = await analyserCatalogue(
+                    fichiers,
+                    catalogueActualise
+                );
+
+                if (!analyseComplete || catalogueActualise.size === 0) {
+                    throw new Error("Le catalogue téléchargé n’a pas pu être analysé intégralement.");
+                }
+
+                const catalogueModifie =
+                    signatureAvantActualisation !==
+                    creerSignatureCatalogue(catalogueActualise);
+
+                if (catalogueModifie) {
+                    catalogue = catalogueActualise;
+                    fichiersAnalyses.clear();
+                    fichiersExistants.clear();
+                    fichiers.forEach(function (fichier) {
+                        fichiersAnalyses.add(fichier);
+                        fichiersExistants.add(fichier);
+                    });
+                    ajouterNouveauxProduits();
+                    publierCategoriesDisponibles();
+                    reinitialiserAffichage();
+                }
+
+                tentativeCatalogueAReprendre = false;
+
+                try {
+                    await LumesysCache.sauvegarderCataloguePersistant(pages);
+                    afficherStatutCatalogue(
+                        catalogueModifie
+                            ? "Catalogue mis à jour."
+                            : "Catalogue à jour.",
+                        false
+                    );
+                } catch (erreurCache) {
+                    console.warn("Lumesys : impossible de mettre à jour le cache local du catalogue.", erreurCache);
+                    afficherStatutCatalogue(
+                        "Catalogue à jour, mais le cache local n’a pas pu être actualisé.",
+                        true
+                    );
+                }
+
+                rendreHistoriqueVues(true);
+                return true;
+            } catch (erreur) {
+                LumesysCache.fichiersMemoire.clear();
+                memoireAvantActualisation.forEach(function (texte, fichier) {
+                    LumesysCache.fichiersMemoire.set(fichier, texte);
+                });
+
+                tentativeCatalogueAReprendre = true;
+                console.warn("Lumesys : la synchronisation du catalogue a échoué.", erreur);
+                afficherStatutCatalogue(
+                    navigator.onLine
+                        ? "Synchronisation impossible; le catalogue affiché est conservé."
+                        : "Hors connexion; le dernier catalogue disponible est conservé.",
+                    true
+                );
+                return false;
+            }
+        })();
+
+        try {
+            return await actualisationEnCours;
+        } finally {
+            actualisationEnCours = null;
+        }
     }
 
 
     /* ========================================================
-       PRÉCHARGEMENT
+       PRÉPARATION DU CATALOGUE
        ======================================================== */
 
-    function prechargerSuite() {
+    async function preparer500() {
+        loading.style.display = "block";
 
-        /*
-         * Ici les fichiers sont déjà analysés
-         * autant que possible.
-         *
-         * On peut néanmoins demander au navigateur
-         * de garder certains fichiers en cache.
-         */
+        const fichiers = LumesysCache.obtenirListeFichiers();
+        fichiersCatalogueCourants = fichiers;
 
-        const fichiers =
-            LumesysCache
-                .obtenirListeFichiers();
+        let catalogueEnregistre = null;
+        try {
+            catalogueEnregistre = await LumesysCache.lireCataloguePersistant();
+        } catch (erreurCache) {
+            console.warn("Lumesys : impossible de lire le cache local du catalogue.", erreurCache);
+        }
 
+        const pagesEnregistrees =
+            catalogueEnregistre && catalogueEnregistre.pages
+                ? catalogueEnregistre.pages
+                : null;
+        const fichiersEnregistres = pagesEnregistrees
+            ? fichiers.filter(function (fichier) {
+                return typeof pagesEnregistrees[fichier] === "string";
+            })
+            : [];
 
-        fichiers.forEach(
-            function (
-                fichier
-            ) {
+        if (fichiersEnregistres.length) {
+            LumesysCache.chargerCatalogueEnMemoire(
+                pagesEnregistrees,
+                fichiersEnregistres
+            );
+            await analyserCatalogue(fichiersEnregistres);
+            ajouterNouveauxProduits();
+            publierCategoriesDisponibles();
+            construireReserve();
+            loading.style.display = "none";
+            afficherProchainesCartes();
+            catalogueInitialise = true;
+            rendreHistoriqueVues(true);
+            afficherStatutCatalogue(
+                "Catalogue local affiché; vérification des mises à jour en cours.",
+                true
+            );
+            setTimeout(recalculerSiNecessaire, 100);
+            actualiserCatalogue(fichiers);
+            return;
+        }
 
-                if (
-                    !fichiersAnalyses.has(
-                        fichier
-                    )
-                ) {
+        const analyseComplete = await analyserCatalogue(fichiers);
+        ajouterNouveauxProduits();
+        publierCategoriesDisponibles();
+        construireReserve();
+        loading.style.display = "none";
+        afficherProchainesCartes();
+        catalogueInitialise = true;
+        rendreHistoriqueVues(true);
 
-                    LumesysCache
-                        .prechargerFichier(
-                            fichier
-                        );
-                }
+        const pagesChargees = analyseComplete
+            ? LumesysCache.obtenirPagesEnMemoire(fichiers)
+            : null;
+
+        if (pagesChargees) {
+            try {
+                await LumesysCache.sauvegarderCataloguePersistant(pagesChargees);
+                afficherStatutCatalogue("Catalogue chargé et enregistré pour la prochaine visite.", false);
+            } catch (erreurCache) {
+                console.warn("Lumesys : impossible d’enregistrer le cache local du catalogue.", erreurCache);
+                afficherStatutCatalogue("Catalogue chargé; le cache local n’a pas pu être enregistré.", true);
             }
-        );
+        } else {
+            tentativeCatalogueAReprendre = true;
+            afficherStatutCatalogue(
+                navigator.onLine
+                    ? "Catalogue partiellement chargé; les produits disponibles sont affichés."
+                    : "Hors connexion; aucun catalogue local complet n’est disponible.",
+                true
+            );
+        }
+
+        setTimeout(recalculerSiNecessaire, 100);
     }
+
+
+    window.addEventListener("online", function () {
+        if (catalogueInitialise && tentativeCatalogueAReprendre && fichiersCatalogueCourants.length) {
+            actualiserCatalogue(fichiersCatalogueCourants);
+        }
+    });
 
 
     document.addEventListener(
@@ -1126,6 +1673,48 @@
             reinitialiserAffichage();
         }
     );
+
+    function actualiserRecommandationsApresSynchronisation() {
+        if (
+            catalogueInitialise &&
+            !filtreCategorie &&
+            !filtreRecherche
+        ) {
+            reinitialiserAffichage();
+        }
+        rendreHistoriqueVues(true);
+    }
+
+    document.addEventListener(
+        "lumesys-view-history-scope-changed",
+        actualiserRecommandationsApresSynchronisation
+    );
+
+    document.addEventListener(
+        "lumesys-view-history-synced",
+        actualiserRecommandationsApresSynchronisation
+    );
+
+    document.addEventListener(
+        "lumesys-view-history-requested",
+        function () {
+            rendreHistoriqueVues(true);
+        }
+    );
+
+    document.addEventListener(
+        "lumesys-view-history-updated",
+        function () {
+            rendreHistoriqueVues(true);
+        }
+    );
+
+    const boutonHistoriquePlus = document.getElementById("history-more");
+    if (boutonHistoriquePlus) {
+        boutonHistoriquePlus.addEventListener("click", function () {
+            rendreHistoriqueVues(false);
+        });
+    }
 
 
     /* ========================================================
@@ -1175,29 +1764,6 @@
 
         dernierRecalcul =
             maintenant;
-
-
-        /*
-         * Vérifier si l'heure a changé.
-         */
-
-        const nouvelleCle =
-            LumesysVariation
-                .obtenirCleHoraire();
-
-
-        if (
-            nouvelleCle !==
-            cleHoraireActuelle
-        ) {
-
-            cleHoraireActuelle =
-                nouvelleCle;
-
-
-            recalculNecessaire =
-                true;
-        }
 
 
         if (
@@ -1319,44 +1885,6 @@
 
 
     /* ========================================================
-       VÉRIFICATION HORAIRE
-       ======================================================== */
-
-    setInterval(
-        function () {
-
-            const nouvelleCle =
-                LumesysVariation
-                    .obtenirCleHoraire();
-
-
-            if (
-                nouvelleCle !==
-                cleHoraireActuelle
-            ) {
-
-                console.log(
-                    "Lumesys : nouvelle heure, nouvelles recommandations."
-                );
-
-
-                cleHoraireActuelle =
-                    nouvelleCle;
-
-
-                recalculNecessaire =
-                    true;
-
-
-                recalculerSiNecessaire();
-            }
-
-        },
-        30000
-    );
-
-
-    /* ========================================================
        INITIALISATION
        ======================================================== */
 
@@ -1376,18 +1904,14 @@
              * Lancer immédiatement.
              */
 
-            preparer500();
-
-
-            /*
-             * Préchargement supplémentaire
-             * sans bloquer l'affichage.
-             */
-
-            setTimeout(
-                prechargerSuite,
-                2000
-            );
+            preparer500().catch(function (erreur) {
+                console.error("Lumesys : impossible de préparer le catalogue.", erreur);
+                loading.style.display = "none";
+                afficherStatutCatalogue(
+                    "Le catalogue n’a pas pu être préparé. Réessayez après avoir vérifié votre connexion.",
+                    true
+                );
+            });
         }
     );
 
