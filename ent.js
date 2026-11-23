@@ -21,6 +21,7 @@ var CATEGORIES_LUMESYS = [
             { id: "chem", label: "Chemises" },
             { id: "lacost", label: "Lacoste" },
             { id: "lacostao", label: "Lacoste 01" },
+        { id: "costumes", label: "Costumes" },
             { id: "mailltot", label: "Maillots" },
             { id: "survetus", label: "Survetements" },
             { id: "vesth", label: "Vestes" }
@@ -37,7 +38,8 @@ var CATEGORIES_LUMESYS = [
     {
         id: "accessoires", label: "Autres produits", subs: [
             { id: "cafpr", label: "Presse café" },
-            { id: "ptarfum", label: "Parfums" }
+            { id: "ptarfum", label: "Parfums" },
+            { id: "tapfem", label: "Tappettes" }
         ]
     }
 ];
@@ -69,6 +71,8 @@ function construireMenuCategories(categoriesDisponibles) {
 
     var menu = document.createElement("ul");
     menu.className = "sub-menu category-main-menu";
+    menu.id = "category-main-menu";
+    titre.setAttribute("aria-controls", menu.id);
 
     (categoriesDisponibles || []).forEach(function (category) {
         var row = document.createElement("li");
@@ -77,8 +81,8 @@ function construireMenuCategories(categoriesDisponibles) {
         var select = document.createElement("a");
         select.href = "#recommandations";
         select.textContent = category.label;
-        select.dataset.category = category.id;
         select.setAttribute("role", "button");
+        select.setAttribute("aria-expanded", "false");
         row.appendChild(select);
 
         var expand = document.createElement("button");
@@ -91,6 +95,9 @@ function construireMenuCategories(categoriesDisponibles) {
 
         var children = document.createElement("ul");
         children.className = "sub-menu category-sub-menu";
+        children.id = "category-submenu-" + category.id;
+        select.setAttribute("aria-controls", children.id);
+        expand.setAttribute("aria-controls", children.id);
         category.subs.forEach(function (sub) {
             var subRow = document.createElement("li");
             var subLink = document.createElement("a");
@@ -104,11 +111,23 @@ function construireMenuCategories(categoriesDisponibles) {
         });
         row.appendChild(children);
 
-        expand.addEventListener("click", function () {
+        function basculerSousCategories() {
             var expanded = row.classList.toggle("open");
+            select.setAttribute("aria-expanded", String(expanded));
             expand.setAttribute("aria-expanded", String(expanded));
             expand.textContent = expanded ? "-" : "+";
+            expand.setAttribute(
+                "aria-label",
+                (expanded ? "Masquer" : "Afficher") + " les sous-catégories de " + category.label
+            );
+        }
+
+        select.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            basculerSousCategories();
         });
+        expand.addEventListener("click", basculerSousCategories);
         menu.appendChild(row);
     });
 
@@ -121,6 +140,21 @@ function construireMenuCategories(categoriesDisponibles) {
         event.preventDefault();
         var expanded = menu.classList.toggle("open");
         titre.setAttribute("aria-expanded", String(expanded));
+        if (!expanded) {
+            menu.querySelectorAll(".category-main-item.open").forEach(function (row) {
+                row.classList.remove("open");
+                var parent = row.querySelector(":scope > a");
+                var toggle = row.querySelector(":scope > .category-toggle");
+                if (parent) {
+                    parent.setAttribute("aria-expanded", "false");
+                }
+                if (toggle) {
+                    toggle.setAttribute("aria-expanded", "false");
+                    toggle.setAttribute("aria-label", "Afficher les sous-catégories de " + parent.textContent);
+                    toggle.textContent = "+";
+                }
+            });
+        }
     });
 
     menu.addEventListener("click", function (event) {
@@ -139,17 +173,17 @@ function construireMenuCategories(categoriesDisponibles) {
         }));
         menu.classList.remove("open");
         titre.setAttribute("aria-expanded", "false");
+        menu.querySelectorAll(".category-main-item.open").forEach(function (row) {
+            row.classList.remove("open");
+            row.querySelector(":scope > a").setAttribute("aria-expanded", "false");
+            var toggle = row.querySelector(":scope > .category-toggle");
+            toggle.setAttribute("aria-expanded", "false");
+            toggle.textContent = "+";
+        });
         if (window.innerWidth <= 900) {
             toggleMenu();
         }
     });
-}
-
-function afficherAccueilCatalogue() {
-    effacerRecherche();
-    document.dispatchEvent(new CustomEvent("lumesys-category", {
-        detail: { category: null, subcategory: null, label: "Accueil" }
-    }));
 }
 
 function effacerRecherche() {
@@ -167,9 +201,42 @@ document.addEventListener("click", function (event) {
     var sidebar = document.getElementById("sidebar");
     var menuIcon = document.querySelector(".menu-icon");
     if (sidebar && sidebar.classList.contains("active") &&
-        !sidebar.contains(event.target) && !menuIcon.contains(event.target)) {
+        !sidebar.contains(event.target) && menuIcon && !menuIcon.contains(event.target)) {
         toggleMenu();
     }
+});
+
+document.addEventListener("click", function (event) {
+    var link = event.target.closest("a[href^='#']");
+    if (!link || link.dataset.category) {
+        return;
+    }
+
+    var target = decodeURIComponent(link.getAttribute("href").slice(1)).toLowerCase();
+    var match = null;
+    CATEGORIES_LUMESYS.some(function (category) {
+        return category.subs.some(function (subcategory) {
+            if (subcategory.id.toLowerCase() === target) {
+                match = { category: category, subcategory: subcategory };
+                return true;
+            }
+            return false;
+        });
+    });
+
+    if (!match) {
+        return;
+    }
+
+    event.preventDefault();
+    effacerRecherche();
+    document.dispatchEvent(new CustomEvent("lumesys-category", {
+        detail: {
+            category: match.category.id,
+            subcategory: match.subcategory.id,
+            label: match.subcategory.label
+        }
+    }));
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -182,8 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var accueil = document.querySelector("#sidebar a[href='#accueil']");
     if (accueil) {
         accueil.addEventListener("click", function (event) {
-            event.preventDefault();
-            afficherAccueilCatalogue();
+            effacerRecherche();
             if (window.innerWidth <= 900) {
                 toggleMenu();
             }
