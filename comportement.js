@@ -14,6 +14,15 @@
     const CLE_PREFERENCES =
         "lumesys_preferences_navigation_v1";
 
+    const CLE_HISTORIQUE_VUES =
+        "lumesys_historique_vues_v1";
+
+    const NOMBRE_MAXIMUM_VUES =
+        500;
+
+    const DUREE_EXPOSITION_MINIMALE =
+        1200;
+
 
     const INTERVALLE_SAUVEGARDE =
         10000;
@@ -28,6 +37,13 @@
     let debutCarte = 0;
 
     let produitsVusSession = new Set();
+    let porteeHistorique = "guest";
+    let historiqueVues = chargerHistoriqueVues(porteeHistorique);
+    let observateurCartes = null;
+    let observateurSansIntersection = false;
+    const cartesObservees = new WeakSet();
+    const expositionsEnCours = new Map();
+    const cartesVisibles = new Set();
 
 
     /* ========================================================
@@ -40,6 +56,140 @@
             .trim()
             .toLowerCase()
             .replace(/\s+/g, "");
+    }
+
+    function cleStockageHistorique(portee) {
+        return CLE_HISTORIQUE_VUES + "_" + encodeURIComponent(portee);
+    }
+
+
+    function normaliserHistoriqueVues(valeur) {
+        const entrees = Array.isArray(valeur)
+            ? valeur.map(function (vue) {
+                return [vue && vue.id, vue && vue.viewedAt];
+            })
+            : Object.entries(valeur || {});
+        const vues = new Map();
+
+        entrees.forEach(function (entree) {
+            const id = String(entree[0] || "").trim();
+            const date = Number(entree[1]);
+            if (id && Number.isFinite(date) && date > 0) {
+                vues.set(id, Math.max(date, vues.get(id) || 0));
+            }
+        });
+
+        return Object.fromEntries(
+            Array.from(vues.entries())
+                .sort(function (a, b) { return b[1] - a[1]; })
+                .slice(0, NOMBRE_MAXIMUM_VUES)
+        );
+    }
+
+
+    function chargerHistoriqueVues(portee) {
+        try {
+            const texte = localStorage.getItem(cleStockageHistorique(portee));
+            return texte
+                ? normaliserHistoriqueVues(JSON.parse(texte))
+                : {};
+        } catch (erreur) {
+            console.warn("Lumesys : historique local des consultations illisible.", erreur);
+            return {};
+        }
+    }
+
+
+    function sauvegarderHistoriqueVues() {
+        try {
+            localStorage.setItem(
+                cleStockageHistorique(porteeHistorique),
+                JSON.stringify(historiqueVues)
+            );
+            return true;
+        } catch (erreur) {
+            console.error("Lumesys : impossible de sauvegarder l’historique des consultations.", erreur);
+            return false;
+        }
+    }
+
+
+    function notifierHistoriqueVues(source) {
+        document.dispatchEvent(new CustomEvent("lumesys-view-history-updated", {
+            detail: {
+                scope: porteeHistorique,
+                source: source
+            }
+        }));
+    }
+
+
+    function definirPorteeHistorique(uid) {
+        const nouvellePortee = uid
+            ? "user:" + String(uid).trim()
+            : "guest";
+
+        if (nouvellePortee === porteeHistorique) {
+            return false;
+        }
+
+        porteeHistorique = nouvellePortee;
+        historiqueVues = chargerHistoriqueVues(porteeHistorique);
+        produitsVusSession = new Set();
+        document.dispatchEvent(new CustomEvent("lumesys-view-history-scope-changed", {
+            detail: { scope: porteeHistorique }
+        }));
+        return true;
+    }
+
+
+    function obtenirHistoriqueVues() {
+        return Object.entries(historiqueVues).map(function (entree) {
+            return { id: entree[0], viewedAt: entree[1] };
+        });
+    }
+
+
+    function fusionnerHistoriqueVues(vuesDistantes) {
+        const distant = normaliserHistoriqueVues(vuesDistantes);
+        const fusion = { ...historiqueVues };
+        let modifie = false;
+
+        Object.entries(distant).forEach(function (entree) {
+            if ((fusion[entree[0]] || 0) < entree[1]) {
+                fusion[entree[0]] = entree[1];
+                modifie = true;
+            }
+        });
+
+        if (modifie) {
+            historiqueVues = normaliserHistoriqueVues(fusion);
+            sauvegarderHistoriqueVues();
+            notifierHistoriqueVues("cloud-merge");
+        }
+
+        return modifie;
+    }
+
+
+    function enregistrerProduitVu(id, categorie, nom) {
+        const identifiant = String(id || "").trim();
+        if (!identifiant) {
+            return false;
+        }
+
+        historiqueVues[identifiant] = Date.now();
+        historiqueVues = normaliserHistoriqueVues(historiqueVues);
+        sauvegarderHistoriqueVues();
+        notifierHistoriqueVues("local");
+
+        if (!produitsVusSession.has(identifiant)) {
+            produitsVusSession.add(identifiant);
+            enregistrerVue(nom || identifiant, categorie || "");
+            commencerTemps(nom || identifiant);
+        }
+
+        return true;
     }
 
 
@@ -418,6 +568,78 @@
        DÉTECTION DES CARTES VISIBLES
        ======================================================== */
 
+    function ratioVisible(carte) {
+        const rectangle = carte.getBoundingClientRect();
+        const largeur = Math.max(
+            0,
+            Math.min(rectangle.right, window.innerWidth) - Math.max(rectangle.left, 0)
+        );
+        const hauteur = Math.max(
+            0,
+            Math.min(rectangle.bottom, window.innerHeight) - Math.max(rectangle.top, 0)
+        );
+        const aire = rectangle.width * rectangle.height;
+        return aire > 0 ? (largeur * hauteur) / aire : 0;
+    }
+
+
+    function annulerExposition(carte) {
+        const minuterie = expositionsEnCours.get(carte);
+        if (minuterie) {
+            clearTimeout(minuterie);
+            expositionsEnCours.delete(carte);
+        }
+        cartesVisibles.delete(carte);
+    }
+
+
+    function demarrerExposition(carte) {
+        cartesVisibles.add(carte);
+        if (expositionsEnCours.has(carte)) {
+            return;
+        }
+
+        const minuterie = setTimeout(function () {
+            expositionsEnCours.delete(carte);
+            if (
+                !carte.isConnected ||
+                !cartesVisibles.has(carte) ||
+                document.visibilityState === "hidden"
+            ) {
+                return;
+            }
+
+            const nom = carte.dataset.produit;
+            const id = carte.dataset.produitId || nom;
+            if (nom && id) {
+                enregistrerProduitVu(
+                    id,
+                    carte.dataset.categorie || "",
+                    nom
+                );
+            }
+        }, DUREE_EXPOSITION_MINIMALE);
+
+        expositionsEnCours.set(carte, minuterie);
+    }
+
+
+    function verifierCartesVisibles() {
+        const conteneur = document.getElementById("recommandations-container");
+        if (!conteneur) {
+            return;
+        }
+
+        conteneur.querySelectorAll("[data-produit]").forEach(function (carte) {
+            if (ratioVisible(carte) >= 0.55) {
+                demarrerExposition(carte);
+            } else {
+                annulerExposition(carte);
+            }
+        });
+    }
+
+
     function observerCartes() {
 
         const conteneur =
@@ -431,79 +653,53 @@
             return;
         }
 
-
-        const observer =
-            new IntersectionObserver(
-                function (entries) {
-
-                    entries.forEach(
-                        function (entry) {
-
+        if (typeof window.IntersectionObserver === "function") {
+            if (!observateurCartes) {
+                observateurCartes = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
                             if (
-                                !entry.isIntersecting
+                                entry.isIntersecting &&
+                                entry.intersectionRatio >= 0.55
                             ) {
-
-                                return;
+                                demarrerExposition(entry.target);
+                            } else {
+                                annulerExposition(entry.target);
                             }
+                        });
+                    },
+                    { threshold: [0, 0.55] }
+                );
+            }
 
-
-                            const carte =
-                                entry.target;
-
-
-                            const produit =
-                                carte.dataset.produit;
-
-
-                            if (!produit) {
-
-                                return;
-                            }
-
-
-                            const categorie =
-                                carte.dataset.categorie ||
-                                "";
-
-                            if (produitsVusSession.has(produit)) {
-                                return;
-                            }
-                            produitsVusSession.add(produit);
-
-
-                            enregistrerVue(
-                                produit,
-                                categorie
-                            );
-
-
-                            commencerTemps(
-                                produit
-                            );
-
-                        },
-                        {
-                            threshold: 0.55
-                        }
-                    );
-
+            conteneur.querySelectorAll("[data-produit]").forEach(function (carte) {
+                if (!cartesObservees.has(carte)) {
+                    cartesObservees.add(carte);
+                    observateurCartes.observe(carte);
                 }
-            );
+            });
 
+            return observateurCartes;
+        }
 
-        const cartes =
-            conteneur.querySelectorAll(
-                "[data-produit]"
-            );
-
-
-        cartes.forEach(
-            carte => observer.observe(carte)
-        );
-
-
-        return observer;
+        if (!observateurSansIntersection) {
+            window.addEventListener("scroll", verifierCartesVisibles, { passive: true });
+            window.addEventListener("resize", verifierCartesVisibles);
+            observateurSansIntersection = true;
+        }
+        verifierCartesVisibles();
+        return null;
     }
+
+
+    document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "hidden") {
+            Array.from(expositionsEnCours.keys()).forEach(annulerExposition);
+            return;
+        }
+
+        verifierCartesVisibles();
+    });
 
 
     /* ========================================================
@@ -522,6 +718,12 @@
                 event.stopPropagation();
                 const carteFavori = boutonFavori.closest("[data-produit]");
                 if (!carteFavori) {
+                    return;
+                }
+                if (window.LumesysCommerce) {
+                    window.LumesysCommerce.toggleFavorite(
+                        window.LumesysCommerce.productFromCard(carteFavori)
+                    );
                     return;
                 }
                 const actif = basculerFavori(
@@ -605,6 +807,14 @@
         obtenirPreferences: function () {
             return preferences;
         },
+
+        obtenirHistoriqueVues: obtenirHistoriqueVues,
+
+        definirPorteeHistorique: definirPorteeHistorique,
+
+        fusionnerHistoriqueVues: fusionnerHistoriqueVues,
+
+        enregistrerProduitVu: enregistrerProduitVu,
 
         basculerFavori: basculerFavori,
 
