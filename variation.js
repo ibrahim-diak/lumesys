@@ -1,6 +1,6 @@
 /* ============================================================
    LUMESYS
-   VARIATION HORAIRE DES RECOMMANDATIONS
+   VARIATION DÉTERMINISTE DES RECOMMANDATIONS
    ============================================================ */
 
 (function () {
@@ -198,30 +198,19 @@
 
 
     /* ========================================================
-       VARIATION HORAIRE
+       VARIATION STABLE PAR VISITEUR
        ======================================================== */
 
     function appliquerVariation(
         produits
     ) {
 
-        const heure =
-            obtenirCreneauHoraire();
-
-
         const visiteur =
             obtenirIdentifiantVisiteur();
 
-
-        const graine =
-            visiteur +
-            "|" +
-            heure;
-
-
         return melanger(
             produits,
-            graine
+            visiteur
         );
     }
 
