@@ -1,0 +1,16 @@
+{
+  "name": "Lumesys Marketplace",
+  "short_name": "Lumesys",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f9f9f9",
+  "theme_color": "#1682b5",
+  "icons": [
+    {
+      "src": "images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
