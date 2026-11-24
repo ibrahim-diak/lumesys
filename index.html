@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
 
 
 
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Lumeco: Trouvez, Achetez et Vendez en Toute Simplicité sur Lumesys - Votre Plateforme de Confiance au Mali </title>
+	<title data-i18n="site.title">Lumesys Marketplace — Achetez et vendez au Mali</title>
 
     <!-- Favicon et PWA -->
 <link rel="icon" href="logo/Ls.png" type="image/png">
 <link rel="manifest" href="manifest.json">
 
-	<link rel="stylesheet" href="stylent.css?v=20261124-marketplace-r12">
-	<script src="ent.js?v=20261123-marketplace-r4"></script>
+	<link rel="stylesheet" href="stylent.css?v=20261124-i18n-r7">
+	<script src="ent.js?v=20261124-i18n-r1"></script>
+	<script defer src="language.js?v=20261124-i18n-r5"></script>
 </head>
 <body>
 	<header>
@@ -22,144 +23,150 @@
                 <span class="brand-mark" aria-hidden="true"></span>
                 <span>Lumesys</span>
             </a>
-            <form class="market-search" id="market-search" role="search">
-                <input type="search" id="market-search-input" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
-                <button type="submit" aria-label="Lancer la recherche">
+            <form class="market-search" id="market-search" role="search" data-i18n-aria-label="nav.search">
+                <input type="search" id="market-search-input" placeholder="Rechercher un produit…" aria-label="Rechercher un produit" data-i18n-placeholder="nav.search" data-i18n-aria-label="nav.search">
+                <button type="submit" aria-label="Lancer la recherche" data-i18n-aria-label="nav.searchSubmit">
                     <span aria-hidden="true">&#128269;</span>
                 </button>
             </form>
-            <nav class="market-actions" aria-label="Accès rapides">
-                <a href="#compte"><span aria-hidden="true">&#128100;</span><small>Compte</small></a>
-                <a href="#favoris"><span aria-hidden="true">&#9825;</span><small>Favoris <span id="favorite-count" class="market-count">0</span></small></a>
+            <nav class="market-actions" aria-label="Accès rapides" data-i18n-aria-label="nav.quickLinks">
+                <a href="#compte" aria-label="Compte" data-i18n-aria-label="nav.account"><span aria-hidden="true">&#128100;</span><small data-i18n="nav.account">Compte</small></a>
+                <a href="#favoris" aria-label="Favoris" data-i18n-aria-label="nav.favorites"><span aria-hidden="true">&#9825;</span><small><span data-i18n="nav.favorites">Favoris</span> <span id="favorite-count" class="market-count">0</span></small></a>
                     <a href="#panier">
                         <svg class="market-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                             <path d="M3 3h2l2.2 11.2a2 2 0 0 0 2 1.6h8.5a2 2 0 0 0 1.9-1.4L22 7H6"></path>
                             <circle cx="10" cy="20" r="1.5"></circle>
                             <circle cx="18" cy="20" r="1.5"></circle>
                         </svg>
-                        <small>Panier <span id="cart-count" class="market-count">0</span></small>
+                        <small><span data-i18n="nav.cart">Panier</span> <span id="cart-count" class="market-count">0</span></small>
                     </a>
+                <div class="language-picker" id="language-picker">
+                    <button id="language-picker-trigger" class="language-picker-trigger" type="button" aria-label="Choisir la langue" aria-haspopup="listbox" aria-controls="language-picker-menu" aria-expanded="false" title="Choisir la langue" data-i18n-aria-label="language.button" data-i18n-title="language.button">
+                        <span aria-hidden="true">🌐</span>
+                    </button>
+                    <div id="language-picker-menu" class="language-picker-menu" role="listbox" aria-label="Langue de l’interface" hidden></div>
+                </div>
             </nav>
         </div>
         <!--Bouton du menu hamburger-->
-        <div class="menu-icon" onclick="toggleMenu()" aria-label="Afficher les catégories" role="button">
+        <div class="menu-icon" onclick="toggleMenu()" aria-label="Afficher les catégories" data-i18n-aria-label="nav.toggleCategories" role="button">
             &#9776;
         </div>
 
 <!-- Barre latérale contenant le Menu caché par défaut.-->
 <div class="sidebar" id="sidebar">
     <ul>
-        <li class="menu-item"><a href="#accueil">Accueil</a></li>
-        <li class="menu-item"><a href="#categorie">Catégorie</a>
+        <li class="menu-item"><a href="#accueil" data-i18n="nav.home">Accueil</a></li>
+        <li class="menu-item"><a href="#categorie" data-i18n="nav.category">Catégories</a>
         <ul class="sub-menu">
-                        <li><a href="#panton">Pantalons</a></li>
-                        <li><a href="#Sacdos">Sacs</a></li>
-                        <li><a href="#Chosse">Chaussures</a></li>
-                        <li><a href="#cafpr">Presse Café</a></li>
-                        <li><a href="#ptarfum">Parfums</a></li>
-                        <li><a href="#ptissu">Tissus</a></li>
-                        <li><a href="#tapfem">Tappettes</a></li>
-                        <li><a href="#survetus">Survetemens</a></li>
-                        <li><a href="#bazin">Bazin</a></li>
-                        <li><a href="#tisbrod">Tissus Brodés</a></li>
-                        <li><a href="#chem">Chemise et Lacoste</a></li>
-                        <li><a href="#lacost">Lacoste</a></li>
-                        <li><a href="#mailltot">Maillots</a></li>
-                        <li><a href="#vesth">Vestes</a></li>
+                        <li><a href="#panton" data-i18n="categories.sub.panton">Pantalons</a></li>
+                        <li><a href="#Sacdos" data-i18n="categories.sub.sacdos">Sacs</a></li>
+                        <li><a href="#Chosse" data-i18n="categories.sub.chosse">Chaussures</a></li>
+                        <li><a href="#cafpr" data-i18n="categories.sub.cafpr">Presse-café</a></li>
+                        <li><a href="#ptarfum" data-i18n="categories.sub.ptarfum">Parfums</a></li>
+                        <li><a href="#ptissu" data-i18n="categories.sub.ptissu">Tissus</a></li>
+                        <li><a href="#tapfem" data-i18n="categories.sub.tapfem">Tapis</a></li>
+                        <li><a href="#survetus" data-i18n="categories.sub.survetus">Survêtements</a></li>
+                        <li><a href="#bazin" data-i18n="categories.sub.bazin">Bazin</a></li>
+                        <li><a href="#tisbrod" data-i18n="categories.sub.tisbrod">Tissus brodés</a></li>
+                        <li><a href="#chem" data-i18n="categories.sub.chem">Chemises</a></li>
+                        <li><a href="#lacost" data-i18n="categories.sub.lacost">Lacoste</a></li>
+                        <li><a href="#mailltot" data-i18n="categories.sub.mailltot">Maillots</a></li>
+                        <li><a href="#vesth" data-i18n="categories.sub.vesth">Vestes</a></li>
         </ul>
         </li>
-        <li class="menu-item"><a href="#ventev">Vendre</a></li>
-        <li class="menu-item"><a href="#annonces">Mes Annonces</a></li>
-        <li class="menu-item"><a href="#historique">Historique</a></li>
-        <li class="menu-item"><a href="#aide">Aide & Support</a></li>
+        <li class="menu-item"><a href="#ventev" data-i18n="nav.sell">Vendre</a></li>
+        <li class="menu-item"><a href="#annonces" data-i18n="nav.listings">Mes annonces</a></li>
+        <li class="menu-item"><a href="#historique" data-i18n="nav.history">Historique</a></li>
+        <li class="menu-item"><a href="#aide" data-i18n="nav.help">Aide et support</a></li>
     </ul>
 </div>
 	</header>
   
   <span id="accueil" class="market-home-anchor" aria-hidden="true"></span>
   <section id="recommandations">
-      <h2>Produits disponibles</h2>
+      <h2 data-i18n="home.productsAvailable">Produits disponibles</h2>
 
     <div id="recommandations-container" class="ccontainer">
         <!-- Les produits recommandés seront ajoutés ici automatiquement -->
     </div>
 
     <div id="recommandations-loading">
-        Chargement des produits...
+        <span data-i18n="home.loading">Chargement des produits…</span>
     </div>
 
     <p id="recommandations-status" class="catalogue-status" role="status" aria-live="polite" hidden></p>
 
     <div id="recommandations-fin">
-        <a href="#categorie">voir le catalogue</a>
+        <a href="#categorie" data-i18n="home.browseCatalog">Voir le catalogue</a>
     </div>
 </section>
 
 <section id="accueil-description" class="market-route">
 
 
-    <h2>Bienvenue chez Lumesys</h2>
-    <p>Bienvenue sur <strong>Lumesys</strong>, votre plateforme de choix pour <a href="#recommandations" class="btn2"><strong>acheter</strong></a> et <a href="#ventev" class="btn4"><strong>vendre</strong></a> en toute <strong>liberté</strong>. Découvrez notre large sélection de <a href="#categorie" class="btn4"><strong>produits</strong></a> et <a href="#categorie" class="btn4"><strong>services</strong></a>, et profitez de la <strong>liberté</strong> de choisir ce qui vous convient le mieux. Grâce à notre <a href="#aide" class="btn4"><strong>accessibilité</strong></a>, chaque utilisateur peut explorer à son rythme.</p>
+    <h2 data-i18n="home.welcomeTitle">Bienvenue chez Lumesys</h2>
+    <p data-i18n-html="home.welcomeHtml">Bienvenue sur <strong>Lumesys</strong>, votre plateforme de choix pour <a href="#recommandations" class="btn2"><strong>acheter</strong></a> et <a href="#ventev" class="btn4"><strong>vendre</strong></a> en toute confiance. Découvrez nos <a href="#categorie" class="btn4"><strong>produits</strong></a> et <a href="#categorie" class="btn4"><strong>services</strong></a>, et explorez la marketplace à votre rythme.</p>
 </section>
 <section id="categorie" class="market-route">
-    <h2>Choisissez parmi nos catégories variées</h2>
-    <p>Explorez une vaste gamme d'options et trouvez exactement ce que vous recherchez. Avec <strong>Lumesys</strong>, votre <strong>liberté</strong> de choix est illimitée. Nous vous offrons une <strong>abondance</strong> d'options, pour que chaque choix soit à la hauteur de vos attentes.</p>
+    <h2 data-i18n="categories.title">Explorez nos catégories</h2>
+    <p data-i18n="categories.description">Parcourez les catégories et trouvez les articles qui vous intéressent.</p>
 
 <div class="caroull">
        
   <div class="ecard">
     <a href="#Chosse" alt="lien d'achat" class="lieAffi">
-      <img src="Articles/Chaussures/IMG-20250108-WA0013.jpg" alt="photo du produit1" title="clic pour voir plus!" class="phtaffi">
+      <img src="Articles/Chaussures/IMG-20250108-WA0013.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
   <div class="ecard">
     <a href="#vesth" alt="lien d'achat" class="lieAffi">
-      <img src="Articles/veste/IMG-20250109-WA0028.jpg" alt="photo du produit2" title="clic pour voir plus!" class="phtaffi">
+      <img src="Articles/veste/IMG-20250109-WA0028.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
   <div class="ecard">
     <a href="#lacost" alt="lien d'achat" class="lieAffi">
-      <img src="Articles/lacoste2/IMG-20250109-WA0102.jpg" alt="photo du produit3" title="clic pour voir plus!" class="phtaffi">
+      <img src="Articles/lacoste2/IMG-20250109-WA0102.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
   <div class="ecard">
     <a href="#ptissu" alt="lien d'achat" class="lieAffi">
-      <img src="Articles/tissu/IMG-20250108-WA0213.jpg" alt="photo du produit4" title="clic pour voir plus!" class="phtaffi">
+      <img src="Articles/tissu/IMG-20250108-WA0213.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
   <div class="ecard">
     <a href="#bazin" alt="lien d'achat" class="lieAffi">
-      <img src="Articles/bazin/IMG-20250110-WA0032.jpg" alt="photo du produit5" title="clic pour voir plus!" class="phtaffi">
+      <img src="Articles/bazin/IMG-20250110-WA0032.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
   <div class="ecard">
     <a href="#Sacdos" alt="lien d'achat" class="lieAffi">
-      <img src="Articles/sac/IMG-20250109-WA0131.jpg" alt="photo du produit6" title="clic pour voir plus!" class="phtaffi">
+      <img src="Articles/sac/IMG-20250109-WA0131.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
   <div class="ecard">
     <a href="#cafpr" alt="lien d'achat" class="lieAffi">
-      <img src="Articles/cafePresse/IMG-20250108-WA0160.jpg" alt="photo du produit7" title="clic pour voir plus!" class="phtaffi">
+      <img src="Articles/cafePresse/IMG-20250108-WA0160.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
   <div class="ecard">
     <a href="#chem" alt="lien d'achat" class="lieAffi">
-      <img src="Articles/chemise/IMG-20250108-WA0112.jpg" alt="photo du produit8" title="clic pour voir plus!" class="phtaffi">
+      <img src="Articles/chemise/IMG-20250108-WA0112.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
 <div class="ecard">
     <a href="#survetus" alt="lien d'achat" class="lieAffi">
-      <img src="Articles/survet3p/IMG-20250109-WA0039.jpg" alt="photo du produit9" title="clic pour voir plus!" class="phtaffi">
+      <img src="Articles/survet3p/IMG-20250109-WA0039.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
   <div class="ecard">
     <a href="#tisbrod" alt="lien d'achat" class="lieAffi">
-    <img src="Articles/tissu_brode/IMG-20250110-WA0017.jpg" alt="photo du produit10" title="clic pour voir plus!" class="phtaffi">
+    <img src="Articles/tissu_brode/IMG-20250110-WA0017.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
   <div class="ecard">
     <a href="#Chosse" alt="lien d'achat" class="lieAffi">
-      <img src="Articles/Chaussures/IMG-20250108-WA0013.jpg" alt="photo du produit1" title="clic pour voir plus!" class="phtaffi">
+      <img src="Articles/Chaussures/IMG-20250108-WA0013.jpg" alt="Illustration de catégorie" title="Cliquer pour voir le produit" data-i18n-alt="categories.imageAlt" data-i18n-title="product.imageTitle" class="phtaffi">
     </a>
   </div>
 
@@ -168,21 +175,21 @@
 
     <div class="list">
   <ul>
-    <li><a href="#panton">Pantalons</a></li>
-    <li><a href="#Sacdos">Sacs</a></li>
-    <li><a href="#Chosse">Chaussures</a></li>
-    <li><a href="#cafpr">Presse Café</a></li>
-    <li><a href="#ptarfum">Parfums</a></li>
-    <li><a href="#ptissu">Tissus</a></li>
-    <li><a href="#tapfem">Tappettes</a></li>
-    <li><a href="#survetus">Survetements</a></li>
-    <li><a href="#bazin">Bazin</a></li>
-    <li><a href="#tisbrod">Tissus Brodés</a></li>
-    <li><a href="#chem">Chemises et Lacoste</a></li>
-    <li><a href="#costumes">Costumes</a></li>
-    <li><a href="#lacost">Lacoste</a></li>
-    <li><a href="#mailltot">Maillots</a></li>
-    <li><a href="#vesth">Vestes</a></li>
+    <li><a href="#panton" data-i18n="categories.sub.panton">Pantalons</a></li>
+    <li><a href="#Sacdos" data-i18n="categories.sub.sacdos">Sacs à dos</a></li>
+    <li><a href="#Chosse" data-i18n="categories.sub.chosse">Chaussures</a></li>
+    <li><a href="#cafpr" data-i18n="categories.sub.cafpr">Presse-café</a></li>
+    <li><a href="#ptarfum" data-i18n="categories.sub.ptarfum">Parfums</a></li>
+    <li><a href="#ptissu" data-i18n="categories.sub.ptissu">Tissus</a></li>
+    <li><a href="#tapfem" data-i18n="categories.sub.tapfem">Tapis</a></li>
+    <li><a href="#survetus" data-i18n="categories.sub.survetus">Survêtements</a></li>
+    <li><a href="#bazin" data-i18n="categories.sub.bazin">Bazin</a></li>
+    <li><a href="#tisbrod" data-i18n="categories.sub.tisbrod">Tissus brodés</a></li>
+    <li><a href="#chem" data-i18n="categories.sub.chem">Chemises</a></li>
+    <li><a href="#costumes" data-i18n="categories.sub.costumes">Costumes</a></li>
+    <li><a href="#lacost" data-i18n="categories.sub.lacost">Lacoste</a></li>
+    <li><a href="#mailltot" data-i18n="categories.sub.mailltot">Maillots</a></li>
+    <li><a href="#vesth" data-i18n="categories.sub.vesth">Vestes</a></li>
   </ul>
 </div>
 
@@ -191,93 +198,89 @@
 </section>
 <section id="achatv" class="market-route">
 
-    <h2>Achetez en toute simplicité</h2>
+    <h2 data-i18n="purchase.title">Achetez en toute simplicité</h2>
 
     <p>
-        Achetez en toute <strong>confiance</strong> et
-        <strong>confort</strong> sur <strong>Lumesys</strong>.
-        Nous avons mis en place des processus de paiement
-        <strong>sécurisés</strong> et des délais de livraison rapides,
-        afin que vous puissiez profiter de vos achats sans souci.
+        <span data-i18n="purchase.description">Achetez en toute confiance sur Lumesys. Contactez le vendeur pour connaître les modalités de paiement et de livraison.</span>
     </p>
 
     <div id="catalogue-dynamique"></div>
-    <p><a href="#recommandations" class="market-action-link">Parcourir le catalogue</a></p>
+    <p><a href="#recommandations" class="market-action-link" data-i18n="purchase.browse">Parcourir le catalogue</a></p>
 
 </section>
 <section id="ventev" class="market-route">
-    <h2>Vendez avec fierté</h2>
-    <p>Vous souhaitez proposer un article sur Lumesys ? Contactez notre équipe pour vérifier les modalités de publication et de vente. Ne transmettez jamais vos codes de connexion ni vos informations bancaires par messagerie.</p>
-    <p><a class="market-action-link" href="https://wa.me/22362002473?text=Bonjour%2C%20je%20souhaite%20proposer%20un%20article%20sur%20Lumesys." target="_blank" rel="noopener noreferrer">Contacter l’équipe vendeurs sur WhatsApp</a></p>
+    <h2 data-i18n="sell.title">Vendez avec fierté</h2>
+    <p data-i18n="sell.description">Vous souhaitez proposer un article sur Lumesys ? Contactez notre équipe pour connaître les modalités de publication et de vente. Ne transmettez jamais vos codes de connexion ni vos informations bancaires par messagerie.</p>
+    <p><a class="market-action-link" href="https://wa.me/22362002473?text=Bonjour%2C%20je%20souhaite%20proposer%20un%20article%20sur%20Lumesys." target="_blank" rel="noopener noreferrer" data-i18n="sell.contact" data-i18n-wa-message="sell.whatsappMessage">Contacter l’équipe vendeurs sur WhatsApp</a></p>
 </section>
 <section id="annonces" class="market-route">
-    <h2>Gérez vos annonces</h2>
-    <p>La marketplace ne contient pas encore d’espace de gestion d’annonces relié à un compte vendeur. Notre équipe peut vous accompagner pour publier, modifier ou retirer une annonce.</p>
-    <p><a class="market-action-link" href="https://wa.me/22362002473?text=Bonjour%2C%20je%20souhaite%20g%C3%A9rer%20une%20annonce%20Lumesys." target="_blank" rel="noopener noreferrer">Demander de l’aide pour mes annonces</a></p>
+    <h2 data-i18n="listings.title">Gérez vos annonces</h2>
+    <p data-i18n="listings.description">La marketplace ne contient pas encore d’espace de gestion d’annonces relié à un compte vendeur. Notre équipe peut vous accompagner pour publier, modifier ou retirer une annonce.</p>
+    <p><a class="market-action-link" href="https://wa.me/22362002473?text=Bonjour%2C%20je%20souhaite%20g%C3%A9rer%20une%20annonce%20Lumesys." target="_blank" rel="noopener noreferrer" data-i18n="listings.contact" data-i18n-wa-message="listings.whatsappMessage">Demander de l’aide pour mes annonces</a></p>
 </section>
 <section id="aide" class="market-route">
-    <h2>Besoin d'aide ?</h2>
-    <p>Notre équipe locale est disponible pour répondre à vos questions sur les produits, les commandes et votre compte.</p>
-    <p><a class="market-action-link" href="https://wa.me/22362002473?text=Bonjour%2C%20j%27ai%20besoin%20d%27aide%20sur%20Lumesys." target="_blank" rel="noopener noreferrer">Contacter le support sur WhatsApp</a></p>
+    <h2 data-i18n="help.title">Besoin d’aide ?</h2>
+    <p data-i18n="help.description">Notre équipe locale est disponible pour répondre à vos questions sur les produits, les commandes et votre compte.</p>
+    <p><a class="market-action-link" href="https://wa.me/22362002473?text=Bonjour%2C%20j%27ai%20besoin%20d%27aide%20sur%20Lumesys." target="_blank" rel="noopener noreferrer" data-i18n="help.contact" data-i18n-wa-message="help.whatsappMessage">Contacter le support sur WhatsApp</a></p>
 </section>
 
 <section id="compte" class="market-route market-panel" aria-labelledby="account-heading">
-    <h2 id="account-heading">Mon compte Lumesys</h2>
-    <p id="account-status" role="status" aria-live="polite">Vérification de la connexion…</p>
+    <h2 id="account-heading" data-i18n="account.title">Mon compte Lumesys</h2>
+    <p id="account-status" role="status" aria-live="polite" data-i18n="account.checking">Vérification de la connexion…</p>
     <div id="account-profile" class="account-profile" hidden>
         <img id="account-avatar" alt="" hidden>
         <p><strong id="account-name"></strong></p>
         <p id="account-email"></p>
         <p id="account-location"></p>
-        <button id="account-signout" class="market-button market-button-secondary" type="button">Se déconnecter</button>
+        <button id="account-signout" class="market-button market-button-secondary" type="button" data-i18n="account.signOut">Se déconnecter</button>
     </div>
-    <button id="account-signin" class="market-button" type="button">Continuer avec Google</button>
-    <p><a href="#recommandations" class="market-action-link">Retour au catalogue</a></p>
+    <button id="account-signin" class="market-button" type="button" data-i18n="account.signIn">Continuer avec Google</button>
+    <p><a href="#recommandations" class="market-action-link" data-i18n="account.back">Retour au catalogue</a></p>
 </section>
 
 <section id="panier" class="market-route market-panel" aria-labelledby="cart-heading">
-    <h2 id="cart-heading">Mon panier</h2>
+    <h2 id="cart-heading" data-i18n="cart.title">Mon panier</h2>
     <p id="cart-status" role="status" aria-live="polite"></p>
     <div id="cart-items" class="market-list"></div>
-    <p id="cart-empty" class="market-empty">Votre panier est vide. Ajoutez-y un article depuis le catalogue.</p>
-    <p class="cart-total">Total : <strong id="cart-total">0 FCFA</strong></p>
-    <a id="cart-checkout" class="market-action-link market-phone-link" href="tel:+22376856631" aria-label="Appeler pour commander" title="Appeler pour commander" hidden>
+    <p id="cart-empty" class="market-empty" data-i18n="cart.empty">Votre panier est vide. Ajoutez-y un article depuis le catalogue.</p>
+    <p class="cart-total"><span data-i18n="cart.total">Total</span> : <strong id="cart-total">0 FCFA</strong></p>
+    <a id="cart-checkout" class="market-action-link market-phone-link" href="tel:+22376856631" aria-label="Appeler pour commander" title="Appeler pour commander" data-i18n-aria-label="cart.callToOrder" data-i18n-title="cart.callToOrder" hidden>
         <svg class="market-phone-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.8 19.8 0 0 1 11.19 19a19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.08 4.18 2 2 0 0 1 4.07 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.79.63 2.64a2 2 0 0 1-.45 2.11L8 9.72a16 16 0 0 0 6 6l1.25-1.25a2 2 0 0 1 2.11-.45c.85.3 1.74.51 2.64.63a2 2 0 0 1 2 2.27Z"></path>
         </svg>
     </a>
-    <p><a href="#recommandations" class="market-action-link">Retour au catalogue</a></p>
+    <p><a href="#recommandations" class="market-action-link" data-i18n="cart.back">Retour au catalogue</a></p>
 </section>
 
 <section id="favoris" class="market-route market-panel" aria-labelledby="favorites-heading">
-    <h2 id="favorites-heading">Mes favoris</h2>
+    <h2 id="favorites-heading" data-i18n="favorites.title">Mes favoris</h2>
     <p id="favorites-status" role="status" aria-live="polite"></p>
     <div id="favorite-items" class="market-list"></div>
-    <p id="favorites-empty" class="market-empty">Vous n’avez pas encore ajouté de favoris.</p>
-    <p><a href="#recommandations" class="market-action-link">Retour au catalogue</a></p>
+    <p id="favorites-empty" class="market-empty" data-i18n="favorites.empty">Vous n’avez pas encore ajouté de favoris.</p>
+    <p><a href="#recommandations" class="market-action-link" data-i18n="cart.back">Retour au catalogue</a></p>
 </section>
 
 <section id="historique" class="market-route market-panel" aria-labelledby="history-heading">
-    <h2 id="history-heading">Historique de consultation</h2>
+    <h2 id="history-heading" data-i18n="history.title">Historique de consultation</h2>
     <p id="history-status" role="status" aria-live="polite"></p>
     <div id="history-products" class="market-history-grid"></div>
-    <p id="history-empty" class="market-empty">Aucun produit consulté n’est encore enregistré.</p>
-    <button id="history-more" class="market-button" type="button" hidden>Afficher plus</button>
-    <p><a href="#recommandations" class="market-action-link">Retour au catalogue</a></p>
+    <p id="history-empty" class="market-empty" data-i18n="history.empty">Aucun produit consulté n’est encore enregistré.</p>
+    <button id="history-more" class="market-button" type="button" data-i18n="history.more" hidden>Afficher plus</button>
+    <p><a href="#recommandations" class="market-action-link" data-i18n="cart.back">Retour au catalogue</a></p>
 </section>
 
 <dialog id="product-details" class="product-details-dialog" aria-labelledby="product-details-name">
-    <button id="product-details-close" class="dialog-close" type="button" aria-label="Fermer">×</button>
+    <button id="product-details-close" class="dialog-close" type="button" aria-label="Fermer" data-i18n-aria-label="details.close">×</button>
     <img id="product-details-image" alt="">
     <h2 id="product-details-name"></h2>
     <p id="product-details-price"></p>
     <div class="product-details-actions">
         <button id="product-details-favorite" class="market-button market-button-secondary" type="button"></button>
-        <button id="product-details-cart" class="market-button" type="button">Ajouter au panier</button>
+        <button id="product-details-cart" class="market-button" type="button" data-i18n="favorites.addToCart">Ajouter au panier</button>
     </div>
 </dialog>
 
-<a href="https://statcounter.com/p13086740/" class="stat" target="_blank">📊 Voir les statistiques</a>
+<a href="https://statcounter.com/p13086740/" class="stat" target="_blank" data-i18n="footer.statistics">📊 Voir les statistiques</a>
 
 
   <!-- Default Statcounter code for Lumeco
@@ -299,14 +302,14 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <!-- End of Statcounter Code -->
 
 <footer>
-        <a href="https://ibrahim-djime.github.io/diak/privacy-policy.html" class="polisecu" title="Politique de confidentialité du site">Politique de confidentialité</a> |
-        <a href="https://ibrahim-djime.github.io/diak/terms-of-service.html" class="polisecu" title="Conditions générales d’utilisation">Conditions générales d’utilisation</a>
+        <a href="https://ibrahim-djime.github.io/diak/privacy-policy.html" class="polisecu" title="Politique de confidentialité du site" data-i18n="footer.privacy" data-i18n-title="footer.privacy">Politique de confidentialité</a> |
+        <a href="https://ibrahim-djime.github.io/diak/terms-of-service.html" class="polisecu" title="Conditions générales d’utilisation" data-i18n="footer.terms" data-i18n-title="footer.terms">Conditions générales d’utilisation</a>
         <div class="social-icons">
          <!-- Bouton WhatsApp -->
 <a href="https://wa.me/22362002473?text=Bonjour!%20Je%20souhaite%20en%20savoir%20plus%20sur%20votre%20site%20web."
    target="_blank"
    class="social-button whatsapp-button"
-   aria-label="Contactez-nous sur WhatsApp">
+   aria-label="Contactez-nous sur WhatsApp" data-i18n-aria-label="footer.whatsapp" data-i18n-wa-message="footer.whatsappMessage">
   <img src="icone/wa.png" alt="WhatsApp" />
 </a>
 
@@ -314,7 +317,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <a href="https://web.facebook.com/ibrahimdjime.diakite.3"
    target="_blank"
    class="social-button facebook-button"
-   aria-label="Partager sur Facebook">
+   aria-label="Partager sur Facebook" data-i18n-aria-label="footer.facebook">
   <img src="icone/facebook.png" alt="Facebook" />
 </a>
 
@@ -322,7 +325,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <a href="https://twitter.com/DiakitIbra19810"
    target="_blank"
    class="social-button twitter-button"
-   aria-label="Partager sur Twitter">
+   aria-label="Partager sur Twitter" data-i18n-aria-label="footer.twitter">
   <img src="icone/x.png" alt="Twitter" />
 </a>
 
@@ -330,7 +333,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <a href="https://www.instagram.com/ibrahim_djime_diakite"
    target="_blank"
    class="social-button instagram-button"
-   aria-label="Voir Instagram">
+   aria-label="Voir Instagram" data-i18n-aria-label="footer.instagram">
   <img src="icone/insta.png" alt="Instagram" />
 </a>
 
@@ -338,11 +341,11 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <a href="https://www.tiktok.com/@ibradiak0"
    target="_blank"
    class="social-button tiktok-button"
-   aria-label="Partager sur TikTok">
+   aria-label="Partager sur TikTok" data-i18n-aria-label="footer.tiktok">
   <img src="icone/tiktok.png" alt="TikTok" />
 </a>
         </div>
-        <p>&copy; 2025 Ibrahim Djimé Diakité. Tous droits réservés.</p>
+        <p data-i18n="footer.copyright">© 2025 Ibrahim Djimé Diakité. Tous droits réservés.</p>
     </footer>
 
 
@@ -350,9 +353,9 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
     <script src="comportement.js?v=20261124-view-history-r1"></script>
 <script src="variation.js?v=20261123-recommendations-stable-r2"></script>
 <script src="moteur-score.js?v=20261124"></script>
-    <script src="recommandations.js?v=20261124-view-history-r3"></script>
-    <script src="marketplace.js?v=20261124-account-ui-r6"></script>
-    <script type="module" src="marketplace-firebase.js?v=20261124-view-history-r1"></script>
+    <script src="recommandations.js?v=20261124-i18n-r4"></script>
+    <script src="marketplace.js?v=20261124-i18n-r4"></script>
+    <script type="module" src="marketplace-firebase.js?v=20261124-i18n-r1"></script>
 
 	</body>
     	</html>
