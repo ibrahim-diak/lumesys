@@ -1,0 +1,201 @@
+{
+  "site": { "title": "Lumesys Marketplace — 在马里买卖商品" },
+  "language": {
+    "button": "选择语言",
+    "menu": "界面语言",
+    "reviewNotice": "班巴拉语翻译尚不完整，需由母语者审核。"
+  },
+  "nav": {
+    "quickLinks": "快捷入口",
+    "home": "首页",
+    "category": "分类",
+    "sell": "出售",
+    "listings": "我的商品",
+    "history": "浏览记录",
+    "help": "帮助与支持",
+    "account": "账户",
+    "favorites": "收藏",
+    "cart": "购物车",
+    "search": "搜索商品…",
+    "searchSubmit": "搜索",
+    "toggleCategories": "显示分类",
+    "toggleMenu": "打开菜单"
+  },
+  "home": {
+    "productsAvailable": "在售商品",
+    "loading": "正在加载商品…",
+    "browseCatalog": "浏览商品目录",
+    "welcomeTitle": "欢迎来到 Lumesys",
+    "welcomeHtml": "欢迎来到 <strong>Lumesys</strong>，您可以自由地<a href=\"#recommandations\" class=\"btn2\"><strong>购物</strong></a>和<a href=\"#ventev\" class=\"btn4\"><strong>出售</strong></a>。这里有丰富的<a href=\"#categorie\" class=\"btn4\"><strong>商品</strong></a>和<a href=\"#categorie\" class=\"btn4\"><strong>服务</strong></a>，您可以选择所需内容并按自己的节奏浏览。"
+  },
+  "categories": {
+    "title": "浏览商品分类",
+    "description": "浏览各个分类，找到您需要的商品。",
+    "imageAlt": "分类图片",
+    "main": {
+      "pantalons": "长裤",
+      "sacs": "包袋",
+      "chaussures": "鞋类",
+      "vetements": "服装",
+      "tissus": "布料与纺织品",
+      "accessoires": "其他商品"
+    },
+    "sub": {
+      "panton": "长裤",
+      "sacdos": "背包",
+      "chosse": "鞋类",
+      "chos_se1": "鞋类 01",
+      "chasuss1": "鞋类 02",
+      "snads": "凉鞋",
+      "chem": "衬衫",
+      "lacost": "Lacoste",
+      "lacostao": "Lacoste 01",
+      "costumes": "西装",
+      "mailltot": "运动球衣",
+      "survetus": "运动服",
+      "vesth": "夹克",
+      "ptissu": "布料",
+      "tissus_cousus": "缝制布料",
+      "tisbrod": "刺绣布料",
+      "bazin": "巴赞布",
+      "cafpr": "咖啡壶",
+      "ptarfum": "香水",
+      "tapfem": "地垫"
+    },
+    "expand": "显示 {category} 子分类",
+    "collapse": "隐藏 {category} 子分类"
+  },
+  "purchase": {
+    "title": "轻松购物",
+    "description": "在 Lumesys 上放心购物。请联系卖家了解付款和配送方式。",
+    "browse": "浏览商品目录"
+  },
+  "sell": {
+    "title": "放心出售",
+    "description": "想在 Lumesys 发布商品？请联系我们了解发布和销售方式。请勿通过消息发送密码或银行信息。",
+    "contact": "通过 WhatsApp 联系卖家支持团队",
+    "whatsappMessage": "您好，我想在 Lumesys 发布商品。"
+  },
+  "listings": {
+    "title": "管理我的商品",
+    "description": "Marketplace 暂未提供卖家商品管理空间。我们的团队可以协助您发布、修改或删除商品。",
+    "contact": "获取商品管理帮助",
+    "whatsappMessage": "您好，我想管理 Lumesys 上的商品信息。"
+  },
+  "help": {
+    "title": "需要帮助吗？",
+    "description": "本地团队可以解答有关商品、订单和账户的问题。",
+    "contact": "通过 WhatsApp 联系客服",
+    "whatsappMessage": "您好，我需要 Lumesys 的帮助。"
+  },
+  "account": {
+    "title": "我的 Lumesys 账户",
+    "checking": "正在检查连接…",
+    "signIn": "使用 Google 继续",
+    "signOut": "退出登录",
+    "member": "Lumesys 会员",
+    "guestReady": "登录后可同步账户、购物车、收藏和浏览记录。访客数据保存在此设备上。",
+    "connectedLoading": "账户已连接，正在加载个人资料和数据…",
+    "ready": "个人资料已加载，购物车、收藏和浏览记录已同步。",
+    "historyLocal": "个人资料已加载，购物车和收藏已同步；浏览记录保存在本机。",
+    "syncUnavailable": "账户同步暂时不可用，本地数据仍会保留。",
+    "syncUnavailableCart": "云同步不可用，仍可使用本地购物车。",
+    "saveFailed": "会话仍然有效，但云端保存失败。本地数据仍会保留。",
+    "historySaveFailed": "浏览记录目前仅保存在此设备上。",
+    "firebaseUnavailable": "账户服务不可用，本地功能仍可使用。",
+    "firebaseInitFailed": "账户服务未能启动。本地功能仍可用，请检查网络和控制台。",
+    "signInFailed": "无法登录，请稍后重试。",
+    "signOutFailed": "无法退出登录，请稍后重试。",
+    "back": "返回商品目录"
+  },
+  "cart": {
+    "title": "我的购物车",
+    "empty": "购物车为空。请从商品目录添加商品。",
+    "total": "总计",
+    "back": "返回商品目录",
+    "updated": "购物车已更新。",
+    "removed": "商品已从购物车移除。",
+    "priceUnavailable": "该商品没有可用价格，无法加入购物车。",
+    "priceToConfirm": "价格待确认",
+    "unit": "每件",
+    "quantity": "数量：{quantity}",
+    "decrease": "减少数量",
+    "increase": "增加数量",
+    "remove": "移除",
+    "callToOrder": "致电下单",
+    "localUnreadable": "无法读取本地购物车，您仍可继续修改。",
+    "localUnavailable": "本地存储不可用，请检查浏览器设置。",
+    "unitPrice": "每件 {amount} FCFA",
+    "cloudSaveFailed": "云同步失败，修改仍保存在此设备上。"
+  },
+  "favorites": {
+    "title": "我的收藏",
+    "empty": "您还没有收藏商品。",
+    "added": "商品已加入收藏。",
+    "removed": "商品已从收藏中移除。",
+    "add": "加入收藏",
+    "remove": "取消收藏",
+    "addToCart": "加入购物车"
+  },
+  "history": {
+    "title": "浏览记录",
+    "empty": "尚未保存浏览过的商品。",
+    "noneAvailable": "浏览过的商品目前均不在商品目录中。",
+    "noneOnDevice": "此设备上没有保存浏览记录。",
+    "loading": "商品目录正在加载。",
+    "available": "有 {count} 件浏览过的商品可供查看。",
+    "expired": "{count} 件商品已不在目录中。",
+    "more": "显示更多"
+  },
+  "details": {
+    "close": "关闭",
+    "title": "商品详情",
+    "view": "查看详情",
+    "viewTitle": "查看商品详情"
+  },
+  "product": {
+    "buy": "购买",
+    "buyMessage": "您好，我想购买商品 {name}。",
+    "imageTitle": "点击查看商品",
+    "imageAlt": "商品 {name}",
+    "discount": "优惠 {amount} FCFA（优惠 {percent}%）",
+    "addToCart": "将 {name} 加入购物车",
+    "addedToCart": "已加入购物车",
+    "sellerCall": "致电卖家",
+    "sellerCallNumber": "致电卖家：+223 76 85 66 31",
+    "price": "{amount} FCFA",
+    "priceUnavailableShort": "暂无价格"
+  },
+  "catalogue": {
+    "checking": "正在检查商品目录更新…",
+    "updated": "商品目录已更新。",
+    "current": "商品目录已是最新。",
+    "cacheFailed": "商品目录已是最新，但本地缓存未能更新。",
+    "syncFailed": "同步失败，当前商品目录已保留。",
+    "offlineKept": "当前离线，已保留最近可用的商品目录。",
+    "localChecking": "正在显示本地商品目录，并检查更新。",
+    "saved": "商品目录已加载，并保存供下次访问使用。",
+    "cacheWriteFailed": "商品目录已加载，但无法保存本地缓存。",
+    "partial": "商品目录部分加载，已显示可用商品。",
+    "offlineEmpty": "当前离线，且没有完整的本地商品目录。",
+    "categoryExhausted": "此分类中的商品已全部浏览完毕。看看其他可能感兴趣的商品吧。",
+    "categoryEmpty": "此分类中没有找到商品。看看其他可能感兴趣的商品吧。",
+    "loadFailed": "无法准备商品目录。请检查网络连接后重试。"
+  },
+  "search": {
+    "noResults": "没有符合搜索条件的商品。"
+  },
+  "footer": {
+    "privacy": "隐私政策",
+    "terms": "使用条款",
+    "copyright": "© 2025 Ibrahim Djimé Diakité。保留所有权利。",
+    "statistics": "查看统计信息",
+    "whatsapp": "通过 WhatsApp 联系我们",
+    "whatsappMessage": "您好！我想进一步了解你们的网站。",
+    "facebook": "分享到 Facebook",
+    "twitter": "分享到 Twitter",
+    "instagram": "查看 Instagram",
+    "tiktok": "分享到 TikTok",
+    "webAnalytics": "网站分析"
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "site": { "title": "Lumesys Marketplace — Buy and sell in Mali" },
+  "language": {
+    "button": "Choose language",
+    "menu": "Interface language",
+    "reviewNotice": "Bambara translations are partial and need review by a native speaker."
+  },
+  "nav": {
+    "quickLinks": "Quick links",
+    "home": "Home",
+    "category": "Categories",
+    "sell": "Sell",
+    "listings": "My listings",
+    "history": "Recently viewed",
+    "help": "Help and support",
+    "account": "Account",
+    "favorites": "Favorites",
+    "cart": "Cart",
+    "search": "Search products…",
+    "searchSubmit": "Search",
+    "toggleCategories": "Show categories",
+    "toggleMenu": "Open menu"
+  },
+  "home": {
+    "productsAvailable": "Products",
+    "loading": "Loading products…",
+    "browseCatalog": "Browse catalogue",
+    "welcomeTitle": "Welcome to Lumesys",
+    "welcomeHtml": "Welcome to <strong>Lumesys</strong>, your trusted marketplace to <a href=\"#recommandations\" class=\"btn2\"><strong>shop</strong></a> and <a href=\"#ventev\" class=\"btn4\"><strong>sell</strong></a> with freedom. Discover our wide selection of <a href=\"#categorie\" class=\"btn4\"><strong>products</strong></a> and <a href=\"#categorie\" class=\"btn4\"><strong>services</strong></a>, choose what suits you, and explore at your own pace."
+  },
+  "categories": {
+    "title": "Explore our categories",
+    "description": "Browse the categories and find the items you are looking for.",
+    "imageAlt": "Category illustration",
+    "main": {
+      "pantalons": "Trousers",
+      "sacs": "Bags",
+      "chaussures": "Shoes",
+      "vetements": "Clothing",
+      "tissus": "Fabrics and textiles",
+      "accessoires": "Other products"
+    },
+    "sub": {
+      "panton": "Trousers",
+      "sacdos": "Backpacks",
+      "chosse": "Shoes",
+      "chos_se1": "Shoes 01",
+      "chasuss1": "Shoes 02",
+      "snads": "Sandals",
+      "chem": "Shirts",
+      "lacost": "Lacoste",
+      "lacostao": "Lacoste 01",
+      "costumes": "Suits",
+      "mailltot": "Sports jerseys",
+      "survetus": "Tracksuits",
+      "vesth": "Jackets",
+      "ptissu": "Fabrics",
+      "tissus_cousus": "Sewn fabrics",
+      "tisbrod": "Embroidered fabrics",
+      "bazin": "Bazin fabric",
+      "cafpr": "Coffee makers",
+      "ptarfum": "Perfumes",
+      "tapfem": "Mats"
+    },
+    "expand": "Show subcategories for {category}",
+    "collapse": "Hide subcategories for {category}"
+  },
+  "purchase": {
+    "title": "Shop with ease",
+    "description": "Shop with confidence on Lumesys. Contact the seller to learn about payment and delivery.",
+    "browse": "Browse catalogue"
+  },
+  "sell": {
+    "title": "Sell with confidence",
+    "description": "Want to list an item on Lumesys? Contact our team to learn how to publish and sell. Never send passwords or banking details in a message.",
+    "contact": "Contact the seller support team on WhatsApp",
+    "whatsappMessage": "Hello, I would like to list an item on Lumesys."
+  },
+  "listings": {
+    "title": "Manage your listings",
+    "description": "Seller listing management is not yet available in the marketplace. Our team can help you publish, edit or remove a listing.",
+    "contact": "Get help with my listings",
+    "whatsappMessage": "Hello, I would like help managing a Lumesys listing."
+  },
+  "help": {
+    "title": "Need help?",
+    "description": "Our local team can answer questions about products, orders and your account.",
+    "contact": "Contact support on WhatsApp",
+    "whatsappMessage": "Hello, I need help with Lumesys."
+  },
+  "account": {
+    "title": "My Lumesys account",
+    "checking": "Checking connection…",
+    "signIn": "Continue with Google",
+    "signOut": "Sign out",
+    "member": "Lumesys member",
+    "guestReady": "Sign in to sync your account, cart, favorites and viewing history. Guest data stays on this device.",
+    "connectedLoading": "Account connected. Loading profile and data…",
+    "ready": "Profile loaded. Cart, favorites and history are synced with your account.",
+    "historyLocal": "Profile loaded. Cart and favorites are synced; history remains on this device.",
+    "syncUnavailable": "Account sync is temporarily unavailable. Your local data is safe.",
+    "syncUnavailableCart": "Cloud sync is unavailable; your local cart is still usable.",
+    "saveFailed": "Your session is active, but cloud saving failed. Your local data is safe.",
+    "historySaveFailed": "Viewing history is currently stored on this device only.",
+    "firebaseUnavailable": "The account service is unavailable. Local features are still available.",
+    "firebaseInitFailed": "The account service did not start. Local features remain available; check your connection and console.",
+    "signInFailed": "Could not sign in. Please try again later.",
+    "signOutFailed": "Could not sign out. Please try again later.",
+    "back": "Back to catalogue"
+  },
+  "cart": {
+    "title": "My cart",
+    "empty": "Your cart is empty. Add an item from the catalogue.",
+    "total": "Total",
+    "back": "Back to catalogue",
+    "updated": "Cart updated.",
+    "removed": "Item removed from cart.",
+    "priceUnavailable": "This item has no available price and cannot be added to the cart.",
+    "priceToConfirm": "Price to be confirmed",
+    "unit": "per item",
+    "quantity": "Quantity: {quantity}",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "remove": "Remove",
+    "callToOrder": "Call to place an order",
+    "localUnreadable": "The local cart could not be read. You can still make new changes.",
+    "localUnavailable": "Local storage is unavailable. Check your browser settings.",
+    "unitPrice": "{amount} FCFA {unit}",
+    "cloudSaveFailed": "Cloud sync failed; changes remain on this device."
+  },
+  "favorites": {
+    "title": "My favorites",
+    "empty": "You have not added any favorites yet.",
+    "added": "Item added to favorites.",
+    "removed": "Item removed from favorites.",
+    "add": "Add to favorites",
+    "remove": "Remove from favorites",
+    "addToCart": "Add to cart"
+  },
+  "history": {
+    "title": "Recently viewed",
+    "empty": "No viewed products have been saved yet.",
+    "noneAvailable": "None of the viewed products are currently in the catalogue.",
+    "noneOnDevice": "No viewed products are saved on this device.",
+    "loading": "The catalogue is loading.",
+    "available": "{count} viewed product(s) available.",
+    "expired": "{count} product(s) are no longer in the catalogue.",
+    "more": "Show more"
+  },
+  "details": {
+    "close": "Close",
+    "title": "Product details",
+    "view": "View details",
+    "viewTitle": "View product details"
+  },
+  "product": {
+    "buy": "Buy",
+    "buyMessage": "Hello, I would like to buy product {name}.",
+    "imageTitle": "Click to view this product",
+    "imageAlt": "Product {name}",
+    "discount": "Save {amount} FCFA ({percent}% off)",
+    "addToCart": "Add {name} to cart",
+    "addedToCart": "Added to cart",
+    "sellerCall": "Call the seller",
+    "sellerCallNumber": "Call the seller at +223 76 85 66 31",
+    "price": "{amount} FCFA",
+    "priceUnavailableShort": "Price unavailable"
+  },
+  "catalogue": {
+    "checking": "Checking for catalogue updates…",
+    "updated": "Catalogue updated.",
+    "current": "Catalogue is up to date.",
+    "cacheFailed": "Catalogue is up to date, but the local cache could not be refreshed.",
+    "syncFailed": "Sync failed; the displayed catalogue has been kept.",
+    "offlineKept": "Offline; the latest available catalogue has been kept.",
+    "localChecking": "Showing the local catalogue; checking for updates.",
+    "saved": "Catalogue loaded and saved for your next visit.",
+    "cacheWriteFailed": "Catalogue loaded, but the local cache could not be saved.",
+    "partial": "Catalogue partially loaded; available products are shown.",
+    "offlineEmpty": "Offline; no complete local catalogue is available.",
+    "categoryExhausted": "You have seen all products in this category. Explore other items you may like.",
+    "categoryEmpty": "No products were found in this category. Explore these other items you may like.",
+    "loadFailed": "The catalogue could not be prepared. Check your connection and try again."
+  },
+  "search": {
+    "noResults": "No products match your search."
+  },
+  "footer": {
+    "privacy": "Privacy policy",
+    "terms": "Terms of use",
+    "copyright": "© 2025 Ibrahim Djimé Diakité. All rights reserved.",
+    "statistics": "View statistics",
+    "whatsapp": "Contact us on WhatsApp",
+    "whatsappMessage": "Hello! I would like to learn more about your website.",
+    "facebook": "Share on Facebook",
+    "twitter": "Share on Twitter",
+    "instagram": "View Instagram",
+    "tiktok": "Share on TikTok",
+    "webAnalytics": "Web analytics"
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "site": {
+    "title": "Lumesys Marketplace — Achetez et vendez au Mali"
+  },
+  "language": {
+    "button": "Choisir la langue",
+    "menu": "Langue de l’interface",
+    "reviewNotice": "La traduction bambara est partielle et doit être vérifiée par un locuteur natif."
+  },
+  "nav": {
+    "quickLinks": "Accès rapides",
+    "home": "Accueil",
+    "category": "Catégories",
+    "sell": "Vendre",
+    "listings": "Mes annonces",
+    "history": "Historique",
+    "help": "Aide et support",
+    "account": "Compte",
+    "favorites": "Favoris",
+    "cart": "Panier",
+    "search": "Rechercher un produit…",
+    "searchSubmit": "Lancer la recherche",
+    "toggleCategories": "Afficher les catégories",
+    "toggleMenu": "Afficher le menu"
+  },
+  "home": {
+    "productsAvailable": "Produits disponibles",
+    "loading": "Chargement des produits…",
+    "browseCatalog": "Voir le catalogue",
+    "welcomeTitle": "Bienvenue chez Lumesys",
+    "welcomeHtml": "Bienvenue sur <strong>Lumesys</strong>, votre plateforme de choix pour <a href=\"#recommandations\" class=\"btn2\"><strong>acheter</strong></a> et <a href=\"#ventev\" class=\"btn4\"><strong>vendre</strong></a> en toute confiance. Découvrez nos <a href=\"#categorie\" class=\"btn4\"><strong>produits</strong></a> et <a href=\"#categorie\" class=\"btn4\"><strong>services</strong></a>, et explorez la marketplace à votre rythme."
+  },
+  "categories": {
+    "title": "Explorez nos catégories",
+    "description": "Parcourez les catégories et trouvez les articles qui vous intéressent.",
+    "imageAlt": "Illustration de catégorie",
+    "main": {
+      "pantalons": "Pantalons",
+      "sacs": "Sacs",
+      "chaussures": "Chaussures",
+      "vetements": "Mode et habillement",
+      "tissus": "Tissus et textiles",
+      "accessoires": "Autres produits"
+    },
+    "sub": {
+      "panton": "Pantalons",
+      "sacdos": "Sacs à dos",
+      "chosse": "Chaussures",
+      "chos_se1": "Chaussures 01",
+      "chasuss1": "Chaussures 02",
+      "snads": "Sandales",
+      "chem": "Chemises",
+      "lacost": "Lacoste",
+      "lacostao": "Lacoste 01",
+      "costumes": "Costumes",
+      "mailltot": "Maillots",
+      "survetus": "Survêtements",
+      "vesth": "Vestes",
+      "ptissu": "Tissus",
+      "tissus_cousus": "Tissus cousus",
+      "tisbrod": "Tissus brodés",
+      "bazin": "Bazin",
+      "cafpr": "Presse-café",
+      "ptarfum": "Parfums",
+      "tapfem": "Tapis"
+    },
+    "expand": "Afficher les sous-catégories de {category}",
+    "collapse": "Masquer les sous-catégories de {category}"
+  },
+  "purchase": {
+    "title": "Achetez en toute simplicité",
+    "description": "Achetez en toute confiance sur Lumesys. Contactez le vendeur pour connaître les modalités de paiement et de livraison.",
+    "browse": "Parcourir le catalogue"
+  },
+  "sell": {
+    "title": "Vendez avec fierté",
+    "description": "Vous souhaitez proposer un article sur Lumesys ? Contactez notre équipe pour connaître les modalités de publication et de vente. Ne transmettez jamais vos codes de connexion ni vos informations bancaires par messagerie.",
+    "contact": "Contacter l’équipe vendeurs sur WhatsApp",
+    "whatsappMessage": "Bonjour, je souhaite proposer un article sur Lumesys."
+  },
+  "listings": {
+    "title": "Gérez vos annonces",
+    "description": "La marketplace ne contient pas encore d’espace de gestion d’annonces relié à un compte vendeur. Notre équipe peut vous accompagner pour publier, modifier ou retirer une annonce.",
+    "contact": "Demander de l’aide pour mes annonces",
+    "whatsappMessage": "Bonjour, je souhaite gérer une annonce Lumesys."
+  },
+  "help": {
+    "title": "Besoin d’aide ?",
+    "description": "Notre équipe locale est disponible pour répondre à vos questions sur les produits, les commandes et votre compte.",
+    "contact": "Contacter le support sur WhatsApp",
+    "whatsappMessage": "Bonjour, j’ai besoin d’aide sur Lumesys."
+  },
+  "account": {
+    "title": "Mon compte Lumesys",
+    "checking": "Vérification de la connexion…",
+    "signIn": "Continuer avec Google",
+    "signOut": "Se déconnecter",
+    "member": "Membre Lumesys",
+    "guestReady": "Connectez-vous pour synchroniser votre compte, votre panier, vos favoris et votre historique. Vos données invité restent sur cet appareil.",
+    "connectedLoading": "Compte connecté. Chargement du profil et des données…",
+    "ready": "Profil chargé. Panier, favoris et historique synchronisés avec votre compte.",
+    "historyLocal": "Profil chargé. Panier et favoris synchronisés; l’historique reste local.",
+    "syncUnavailable": "La synchronisation du compte est temporairement indisponible. Vos données locales sont conservées.",
+    "syncUnavailableCart": "Synchronisation cloud indisponible; le panier local reste utilisable.",
+    "saveFailed": "La session reste active, mais la sauvegarde cloud a échoué. Vos données locales sont conservées.",
+    "historySaveFailed": "L’historique reste uniquement sur cet appareil pour le moment.",
+    "firebaseUnavailable": "Le service de compte n’est pas disponible. Les fonctions locales restent accessibles.",
+    "firebaseInitFailed": "Le service de compte ne s’est pas initialisé. Les fonctions locales restent disponibles; vérifiez la connexion et la console.",
+    "signInFailed": "Connexion impossible. Réessayez plus tard.",
+    "signOutFailed": "Déconnexion impossible. Réessayez plus tard.",
+    "back": "Retour au catalogue"
+  },
+  "cart": {
+    "title": "Mon panier",
+    "empty": "Votre panier est vide. Ajoutez-y un article depuis le catalogue.",
+    "total": "Total",
+    "back": "Retour au catalogue",
+    "updated": "Panier mis à jour.",
+    "removed": "Article retiré du panier.",
+    "priceUnavailable": "Le prix de cet article n’est pas disponible; il ne peut pas être ajouté au panier.",
+    "priceToConfirm": "Prix à confirmer",
+    "unit": "l’unité",
+    "quantity": "Quantité : {quantity}",
+    "decrease": "Diminuer la quantité",
+    "increase": "Augmenter la quantité",
+    "remove": "Retirer",
+    "callToOrder": "Appeler pour commander",
+    "localUnreadable": "Le panier local n’a pas pu être lu. Les nouvelles modifications restent disponibles.",
+    "localUnavailable": "Le stockage local est indisponible. Vérifiez les paramètres de votre navigateur.",
+    "unitPrice": "{amount} FCFA {unit}",
+    "cloudSaveFailed": "Échec de synchronisation cloud; les changements restent sur cet appareil."
+  },
+  "favorites": {
+    "title": "Mes favoris",
+    "empty": "Vous n’avez pas encore ajouté de favoris.",
+    "added": "Article ajouté aux favoris.",
+    "removed": "Article retiré des favoris.",
+    "add": "Ajouter aux favoris",
+    "remove": "Retirer des favoris",
+    "addToCart": "Ajouter au panier"
+  },
+  "history": {
+    "title": "Historique de consultation",
+    "empty": "Aucun produit consulté n’est encore enregistré.",
+    "noneAvailable": "Aucun produit consulté n’est actuellement disponible dans le catalogue.",
+    "noneOnDevice": "Aucun produit consulté n’est enregistré sur cet appareil.",
+    "loading": "Le catalogue est en cours de chargement.",
+    "available": "{count} produit(s) consulté(s) disponible(s).",
+    "expired": "{count} produit(s) ne figurent plus au catalogue.",
+    "more": "Afficher plus"
+  },
+  "details": {
+    "close": "Fermer",
+    "title": "Détails du produit",
+    "view": "Voir les détails",
+    "viewTitle": "Voir les détails du produit"
+  },
+  "product": {
+    "buy": "Acheter",
+    "buyMessage": "Bonjour, je souhaite acheter le produit {name}.",
+    "imageTitle": "Cliquer pour voir le produit",
+    "imageAlt": "Produit {name}",
+    "discount": "Réduction de {amount} FCFA ({percent} % de réduction)",
+    "addToCart": "Ajouter {name} au panier",
+    "addedToCart": "Article ajouté au panier",
+    "sellerCall": "Appeler le vendeur",
+    "sellerCallNumber": "Appeler le vendeur au +223 76 85 66 31",
+    "price": "{amount} FCFA",
+    "priceUnavailableShort": "Prix indisponible"
+  },
+  "catalogue": {
+    "checking": "Vérification des mises à jour du catalogue…",
+    "updated": "Catalogue mis à jour.",
+    "current": "Catalogue à jour.",
+    "cacheFailed": "Catalogue à jour, mais le cache local n’a pas pu être actualisé.",
+    "syncFailed": "Synchronisation impossible; le catalogue affiché est conservé.",
+    "offlineKept": "Hors connexion; le dernier catalogue disponible est conservé.",
+    "localChecking": "Catalogue local affiché; vérification des mises à jour en cours.",
+    "saved": "Catalogue chargé et enregistré pour la prochaine visite.",
+    "cacheWriteFailed": "Catalogue chargé; le cache local n’a pas pu être enregistré.",
+    "partial": "Catalogue partiellement chargé; les produits disponibles sont affichés.",
+    "offlineEmpty": "Hors connexion; aucun catalogue local complet n’est disponible.",
+    "categoryExhausted": "Vous avez découvert tous les produits de cette catégorie. Découvrez maintenant d’autres articles qui pourraient vous intéresser.",
+    "categoryEmpty": "Aucun produit de cette catégorie n’a été trouvé. Découvrez ces autres articles qui pourraient vous intéresser.",
+    "loadFailed": "Le catalogue n’a pas pu être préparé. Réessayez après avoir vérifié votre connexion."
+  },
+  "search": {
+    "noResults": "Aucun produit ne correspond à votre recherche."
+  },
+  "footer": {
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions générales d’utilisation",
+    "copyright": "© 2025 Ibrahim Djimé Diakité. Tous droits réservés.",
+    "statistics": "Voir les statistiques",
+    "whatsapp": "Contactez-nous sur WhatsApp",
+    "whatsappMessage": "Bonjour ! Je souhaite en savoir plus sur votre site web.",
+    "facebook": "Partager sur Facebook",
+    "twitter": "Partager sur Twitter",
+    "instagram": "Voir Instagram",
+    "tiktok": "Partager sur TikTok",
+    "webAnalytics": "Analytique web"
+  }
+}

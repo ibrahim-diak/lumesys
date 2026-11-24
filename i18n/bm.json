@@ -1,0 +1,209 @@
+{
+  "site": {
+    "title": "Lumesys Marketplace — Mali kɔnɔ feere ni san"
+  },
+  "language": {
+    "button": "Kan sugandi",
+    "menu": "Interfasi kan",
+    "reviewNotice": "Bamanankan tilibaga dɔw bɛ yen. Dɔw ka kan ka sɛgɛsɛgɛ."
+  },
+  "_reviewRequired": [
+    "Navigasiyɔn ani kategoriw",
+    "Katalogi, fɛn sɛbɛnw ani fɛn kɛwale",
+    "Jatebɔ, sanpanɛri, n fɛrɛw ani lajɛ tɛmɛnenw",
+    "Ladilikanw, fɔrimuw ani dɛmɛ yɔrɔw"
+  ],
+  "nav": {
+    "quickLinks": "Sira surunw",
+    "home": "So",
+    "category": "Kategoriw",
+    "sell": "Feere",
+    "listings": "N ka fɛnw",
+    "history": "Lajɛ tɛmɛnenw",
+    "help": "Dɛmɛ ni ladili",
+    "account": "Jatebɔ",
+    "favorites": "N fɛrɛw",
+    "cart": "Sanpanɛri",
+    "search": "Fɛn ɲini…",
+    "searchSubmit": "Ɲini",
+    "toggleCategories": "Kategoriw jira",
+    "toggleMenu": "Menu jira"
+  },
+  "home": {
+    "productsAvailable": "Fɛn minnu bɛ sɔrɔ",
+    "loading": "Fɛnw bɛ loading…",
+    "browseCatalog": "Katalogi lajɛ",
+    "welcomeTitle": "I bisimila Lumesys la",
+    "welcomeHtml": "I bisimila <strong>Lumesys</strong> la, i ka yɔrɔ min na i bɛ se ka <a href=\"#recommandations\" class=\"btn2\"><strong>san</strong></a> ani ka <a href=\"#ventev\" class=\"btn4\"><strong>feere</strong></a> ka dannaya. An ka <a href=\"#categorie\" class=\"btn4\"><strong>fɛn</strong></a> ni <a href=\"#categorie\" class=\"btn4\"><strong>baarakɛwalew</strong></a> lajɛ, i bɛ i yɛrɛ ka sugandi."
+  },
+  "categories": {
+    "title": "An ka kategoriw lajɛ",
+    "description": "Kategoriw lajɛ, i ka fɛn ɲini.",
+    "imageAlt": "Kategori ja",
+    "main": {
+      "pantalons": "Pantalɔn",
+      "sacs": "Sako",
+      "chaussures": "Samara",
+      "vetements": "Fini ni dɔgɔya",
+      "tissus": "Finiw",
+      "accessoires": "Fɛn wɛrɛw"
+    },
+    "sub": {
+      "panton": "Pantalɔn",
+      "sacdos": "Sako kunkɔrɔ",
+      "chosse": "Samara",
+      "chos_se1": "Samara 01",
+      "chasuss1": "Samara 02",
+      "snads": "Sandali",
+      "chem": "Chemise",
+      "lacost": "Lacoste",
+      "lacostao": "Lacoste 01",
+      "costumes": "Costume",
+      "mailltot": "Maillot",
+      "survetus": "Survetement",
+      "vesth": "Vestɛ",
+      "ptissu": "Fini",
+      "tissus_cousus": "Fini dɛsɛnen",
+      "tisbrod": "Fini dilannen",
+      "bazin": "Bazin",
+      "cafpr": "Kafe presi",
+      "ptarfum": "Parfun",
+      "tapfem": "Tapisi"
+    },
+    "expand": "{category} dɔgɔyaw jira",
+    "collapse": "{category} dɔgɔyaw dogo"
+  },
+  "purchase": {
+    "title": "San ni nɔgɔya",
+    "description": "San ka ɲɛ Lumesys kan. Feerefɛn mɔgɔ weele ka wari sara ni taga-taga kunnafonidaw dɔn.",
+    "browse": "Katalogi lajɛ"
+  },
+  "sell": {
+    "title": "Feere ni dannaya",
+    "description": "I b’a fɛ ka fɛn dɔ bila Lumesys kan? An ka ekipi weele ka bɔli ni feere sira dɔn. I kana i ka sigili sɛbɛnw walima wari kunnafonidaw ci messagerie fɛ.",
+    "contact": "Feere ekipi weele WhatsApp fɛ",
+    "whatsappMessage": "Bisimila, n b’a fɛ ka fɛn dɔ bila Lumesys kan."
+  },
+  "listings": {
+    "title": "I ka fɛnw ɲɛnabɔ",
+    "description": "Fɛnw ɲɛnabɔ yɔrɔ tɛ yen sisan Lumesys marketplace kɔnɔ. An ka ekipi bɛ se ka i dɛmɛ ka fɛn dɔ bila, yɛlɛma walima a bɔ.",
+    "contact": "N ka fɛn ɲɛnabɔ dɛmɛ ɲini",
+    "whatsappMessage": "Bisimila, n b’a fɛ ka n ka fɛn dɔ ɲɛnabɔ Lumesys kan."
+  },
+  "help": {
+    "title": "Dɛmɛ mako?",
+    "description": "An ka ekipi bɛ se ka i ka ɲininkaliw jaabi fɛnw, cidenw ani i ka jatebɔ ko la.",
+    "contact": "Dɛmɛ sɔrɔ WhatsApp fɛ",
+    "whatsappMessage": "Bisimila, n mako bɛ dɛmɛ la Lumesys kan."
+  },
+  "account": {
+    "title": "N ka Lumesys jatebɔ",
+    "checking": "Connexion lajɛli bɛ kɛ…",
+    "signIn": "Taa ni Google ye",
+    "signOut": "Bɔ",
+    "member": "Lumesys kɔdɔn",
+    "guestReady": "I bɛ se ka i don ka i ka jatebɔ, sanpanɛri, n fɛrɛw ni lajɛ tɛmɛnenw ɲɔgɔn cɛ. I ka kunnafoniw minnu bɛ i yɛrɛ ka masin kan olu bɛ to yen.",
+    "connectedLoading": "Jatebɔ donna. Jatebɔ kunnafoniw bɛ loading…",
+    "ready": "Jatebɔ donna. Sanpanɛri, n fɛrɛw ni lajɛ tɛmɛnenw bɛ ɲɔgɔn cɛ i ka jatebɔ la.",
+    "historyLocal": "Jatebɔ donna. Sanpanɛri ni n fɛrɛw bɛ ɲɔgɔn cɛ; lajɛ tɛmɛnenw bɛ nin masin kan.",
+    "syncUnavailable": "Jatebɔ ɲɔgɔn cɛli tɛ se ka kɛ sisan. I ka kunnafoni yɔrɔla bɛ to.",
+    "syncUnavailableCart": "Cloud ɲɔgɔn cɛli tɛ se ka kɛ; sanpanɛri yɔrɔla bɛ se ka baara.",
+    "saveFailed": "Connexion bɛ yen, nka cloud marali ma kɛ. I ka kunnafoni yɔrɔla bɛ to.",
+    "historySaveFailed": "Lajɛ tɛmɛnenw bɛ nin masin kan sisan.",
+    "firebaseUnavailable": "Jatebɔ baarakɛyɔrɔ tɛ sɔrɔ. Baarakɛ yɔrɔla bɛ se ka kɛ.",
+    "firebaseInitFailed": "Jatebɔ baarakɛyɔrɔ ma daminɛ. Baarakɛ yɔrɔla bɛ se ka kɛ; connexion ni console lajɛ.",
+    "signInFailed": "I ma se ka don. A ɲini tugun.",
+    "signOutFailed": "I ma se ka bɔ. A ɲini tugun.",
+    "back": "Segin katalogi ma"
+  },
+  "cart": {
+    "title": "N ka sanpanɛri",
+    "empty": "I ka sanpanɛri jɛgɛla. Fɛn dɔ fara a kan katalogi kɔnɔ.",
+    "total": "Da bɛɛ",
+    "back": "Segin katalogi ma",
+    "updated": "Sanpanɛri yɛlɛmana.",
+    "removed": "Fɛn bɔra sanpanɛri kɔnɔ.",
+    "priceUnavailable": "Fɛn in da tɛ sɔrɔ; a tɛ se ka fara sanpanɛri kan.",
+    "priceToConfirm": "Sɔngɔ ka kan ka sɛgɛsɛgɛ",
+    "unit": "kelen",
+    "quantity": "Hakɛ: {quantity}",
+    "decrease": "Hakɛ dɔgɔya",
+    "increase": "Hakɛ caya",
+    "remove": "Bɔ",
+    "callToOrder": "Weele ka san",
+    "localUnreadable": "Sanpanɛri yɔrɔla ma se ka kalan. Yɛlɛma kuraw bɛ to.",
+    "localUnavailable": "Yɔrɔ marali tɛ sɔrɔ. I ka navigateur sigicogo lajɛ.",
+    "unitPrice": "{amount} FCFA {unit}",
+    "cloudSaveFailed": "Cloud ɲɔgɔn cɛli ma kɛ; yɛlɛmaw bɛ nin masin kan."
+  },
+  "favorites": {
+    "title": "N fɛrɛw",
+    "empty": "I ma fɛn dɔ fara i fɛrɛw kan fɔlɔ.",
+    "added": "Fɛn fara i fɛrɛw kan.",
+    "removed": "Fɛn bɔra i fɛrɛw kɔnɔ.",
+    "add": "Fara i fɛrɛw kan",
+    "remove": "Bɔ i fɛrɛw kɔnɔ",
+    "addToCart": "Fara sanpanɛri kan"
+  },
+  "history": {
+    "title": "Lajɛ tɛmɛnenw",
+    "empty": "Fɛn lajɛlen si ma marali.",
+    "noneAvailable": "Fɛn lajɛlen si tɛ katalogi kɔnɔ sisan.",
+    "noneOnDevice": "Fɛn lajɛlen si ma marali nin masin kan.",
+    "loading": "Katalogi bɛ loading.",
+    "available": "{count} fɛn lajɛlen bɛ sɔrɔ.",
+    "expired": "{count} fɛn tɛ katalogi kɔnɔ tugun.",
+    "more": "Caya jira"
+  },
+  "details": {
+    "close": "Dogo",
+    "title": "Fɛn kunnafoni",
+    "view": "Kunnafoniw lajɛ",
+    "viewTitle": "Fɛn kunnafoniw lajɛ"
+  },
+  "product": {
+    "buy": "San",
+    "buyMessage": "Bisimila, n b’a fɛ ka fɛn {name} san.",
+    "imageTitle": "Dun ka fɛn lajɛ",
+    "imageAlt": "Fɛn {name}",
+    "discount": "Dɔgɔya {amount} FCFA ({percent} % dɔgɔya)",
+    "addToCart": "Fɛn {name} fara sanpanɛri kan",
+    "addedToCart": "Fɛn fara sanpanɛri kan",
+    "sellerCall": "Feerefɛn mɔgɔ weele",
+    "sellerCallNumber": "Feerefɛn mɔgɔ weele +223 76 85 66 31",
+    "price": "{amount} FCFA",
+    "priceUnavailableShort": "Da tɛ sɔrɔ"
+  },
+  "catalogue": {
+    "checking": "Katalogi yɛlɛmaw lajɛli bɛ kɛ…",
+    "updated": "Katalogi yɛlɛmana.",
+    "current": "Katalogi kura.",
+    "cacheFailed": "Katalogi kura, nka cache yɔrɔ ma se ka yɛlɛma.",
+    "syncFailed": "ɲɔgɔn cɛli ma se ka kɛ; katalogi min bɛ jira bɛ to.",
+    "offlineKept": "Connexion tɛ; katalogi laban bɛ to.",
+    "localChecking": "Katalogi yɔrɔla bɛ jira; yɛlɛmaw lajɛli bɛ kɛ.",
+    "saved": "Katalogi loadinna ka marali kɛ i ka lajɛ nata la.",
+    "cacheWriteFailed": "Katalogi loadinna; cache yɔrɔ ma se ka marali.",
+    "partial": "Katalogi loadinna fɔlɔ; fɛn sɔrɔlenw bɛ jira.",
+    "offlineEmpty": "Connexion tɛ; katalogi dafalen yɔrɔla tɛ sɔrɔ.",
+    "categoryExhausted": "I ye kategori in ka fɛn bɛɛ lajɛ. Fɛn wɛrɛw lajɛ.",
+    "categoryEmpty": "Fɛn si ma sɔrɔ kategori in kɔnɔ. Fɛn wɛrɛw lajɛ.",
+    "loadFailed": "Katalogi ma se ka labɛn. A ɲini tugun ka i ka connexion lajɛ."
+  },
+  "search": {
+    "noResults": "Fɛn si ma bɛn i ka ɲinin ma."
+  },
+  "footer": {
+    "privacy": "Dakun lakanali sariyaw",
+    "terms": "Baarakɛ sariyaw",
+    "copyright": "© 2025 Ibrahim Djimé Diakité. Jos bɛɛ bɛ a bolo.",
+    "statistics": "Statistikaw lajɛ",
+    "whatsapp": "An weele WhatsApp fɛ",
+    "whatsappMessage": "Bisimila! N b’a fɛ ka i ka siti ko dɔw dɔn.",
+    "facebook": "Taga Facebook kan",
+    "twitter": "Taga Twitter kan",
+    "instagram": "Instagram lajɛ",
+    "tiktok": "Taga TikTok kan",
+    "webAnalytics": "Web statistikaw"
+  }
+}
